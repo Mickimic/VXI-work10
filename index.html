@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>星际工时日志 - 9月特辑</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <!-- 修正Orbitron字体加载 -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- 配置Tailwind自定义颜色和字体（星际探险主题） -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'space-blue': '#1E40AF',
+                        'nebula-purple': '#7C3AED',
+                        'star-yellow': '#FBBF24',
+                        'comet-gray': '#64748B',
+                        'void-black': '#0F172A',
+                        'galaxy-dark': '#1E293B',
+                        'orbit-light': '#94A3B8'
+                    },
+                    fontFamily: {
+                        'space': ['"Orbitron"', 'sans-serif', 'Arial'],
+                        'sans': ['Inter', 'system-ui', 'sans-serif']
+                    },
+                    animation: {
+                        'float-star': 'float-star 8s ease-in-out infinite',
+                        'pulse-orb': 'pulse 5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'glow-ship': 'glow-ship 3s ease-in-out infinite alternate',
+                        'spin-planet': 'spin 20s linear infinite',
+                    },
+                    keyframes: {
+                        'float-star': {
+                            '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-15px) rotate(5deg)' },
+                        },
+                        'glow-ship': {
+                            '0%': { boxShadow: '0 0 8px rgba(30, 64, 175, 0.6), 0 0 15px rgba(30, 64, 175, 0.4)' },
+                            '100%': { boxShadow: '0 0 15px rgba(30, 64, 175, 0.9), 0 0 30px rgba(30, 64, 175, 0.6), 0 0 45px rgba(30, 64, 175, 0.3)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- 自定义工具类 -->
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow-space {
+                text-shadow: 0 0 6px rgba(30, 64, 175, 0.8), 0 0 12px rgba(30, 64, 175, 0.5);
+            }
+            .text-shadow-nebula {
+                text-shadow: 0 0 6px rgba(124, 58, 237, 0.8), 0 0 12px rgba(124, 58, 237, 0.5);
+            }
+            .text-shadow-star {
+                text-shadow: 0 0 6px rgba(251, 191, 36, 0.8), 0 0 12px rgba(251, 191, 36, 0.5);
+            }
+            .bg-nebula {
+                background-image: 
+                    linear-gradient(rgba(30, 64, 175, 0.08) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(30, 64, 175, 0.08) 1px, transparent 1px);
+                background-size: 25px 25px;
+            }
+            .glow-border-space {
+                box-shadow: 0 0 6px rgba(30, 64, 175, 0.6), 0 0 12px rgba(30, 64, 175, 0.4);
+            }
+            .glow-border-nebula {
+                box-shadow: 0 0 6px rgba(124, 58, 237, 0.6), 0 0 12px rgba(124, 58, 237, 0.4);
+            }
+            .glow-border-star {
+                box-shadow: 0 0 6px rgba(251, 191, 36, 0.6), 0 0 12px rgba(251, 191, 36, 0.4);
+            }
+        }
+    </style>
+    
+    <style>
+        /* 基础样式 */
+        body {
+            background-color: #0F172A;
+            color: #ffffff;
+            overflow-x: hidden;
+            background-image: url('https://picsum.photos/id/1040/1920/1080'); /* 星云背景图 */
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+        }
+        
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #1E293B;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #1E40AF;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7C3AED;
+        }
+        
+        /* 图片抖动动画（所有状态统一效果） */
+        @keyframes imgShake {
+            0% { transform: translateX(0); }
+            20% { transform: translateX(-8px); }
+            40% { transform: translateX(8px); }
+            60% { transform: translateX(-6px); }
+            80% { transform: translateX(6px); }
+            100% { transform: translateX(0); }
+        }
+        .shake-active {
+            animation: imgShake 0.8s ease-in-out 1; /* 统一0.8秒单次抖动 */
+        }
+        
+        /* 动画效果 */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(25px);
+            transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+        }
+        
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* 宇航员弹窗背景模糊效果 */
+        .modal-backdrop {
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            background-color: rgba(15, 23, 42, 0.7);
+        }
+        
+        /* 表格单元格动画 */
+        .table-cell {
+            transition: all 0.3s ease;
+        }
+        
+        .table-cell:hover {
+            transform: scale(1.05);
+            background-color: rgba(30, 64, 175, 0.1);
+            border-radius: 4px;
+        }
+        
+        /* 搜索框动画 */
+        .search-input:focus {
+            box-shadow: 0 0 12px rgba(30, 64, 175, 0.9), 0 0 24px rgba(30, 64, 175, 0.6);
+        }
+        
+        /* 行星旋转动画 */
+        .planet {
+            border-radius: 50%;
+            background: radial-gradient(circle, #FBBF24 0%, #F59E0B 100%);
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.8);
+            position: absolute;
+            z-index: 0;
+        }
+    </style>
+</head>
+<body class="bg-void-black bg-nebula min-h-screen">
+    <!-- 行星装饰元素 -->
+    <div class="planet w-24 h-24 top-20 right-10 animate-spin-planet hidden lg:block"></div>
+    <div class="planet w-16 h-16 bottom-40 left-10 animate-spin-planet" style="animation-duration: 25s; background: radial-gradient(circle, #1E40AF 0%, #0C4A6E 100%); box-shadow: 0 0 15px rgba(30, 64, 175, 0.8);"></div>
+
+    <!-- 顶部导航（星际飞船控制台风格） -->
+    <header class="relative z-10 border-b border-space-blue/40 bg-void-black/90 backdrop-blur-sm sticky top-0">
+        <div class="container mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
+            <div class="flex items-center mb-4 md:mb-0">
+                <div class="w-12 h-12 rounded-full bg-space-blue/20 animate-pulse-orb mr-3 flex items-center justify-center">
+                    <i class="fa fa-rocket text-space-blue text-2xl transform rotate-45"></i>
+                </div>
+                <h1 class="text-2xl md:text-3xl font-space text-space-blue text-shadow-space">
+                    星际工时日志 9.0
+                </h1>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <div class="relative hidden md:block">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                        <i class="fa fa-search text-space-blue/70"></i>
+                    </span>
+                    <input type="text" id="globalSearch" placeholder="搜索星际员工..." 
+                           class="bg-galaxy-dark border border-space-blue/40 rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:border-space-blue transition-all w-56 lg:w-72 text-white search-input">
+                </div>
+                
+                <button class="bg-galaxy-dark hover:bg-orbit-light/20 border border-nebula/60 text-nebula py-2 px-5 rounded-full text-sm transition-all hover:glow-border-nebula flex items-center" id="resetBtn">
+                    <i class="fa fa-refresh mr-2"></i> 重置日志
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 relative z-10">
+        <!-- 页面标题和简介（星际任务说明） -->
+        <section class="mb-12 animate-on-scroll">
+            <div class="text-center max-w-3xl mx-auto">
+                <h2 class="text-[clamp(1.8rem,5vw,3rem)] font-space text-star-yellow text-shadow-star mb-4">
+                    9月星际员工工时系统
+                </h2>
+                <p class="text-orbit-light text-lg mb-6">
+                    欢迎来到9月星际工时控制台！本月标准工时176小时，请确保你的任务时长达标，避免被分配到小行星采矿任务。
+                </p>
+                
+                <!-- 移动端搜索框 -->
+                <div class="relative md:hidden mb-6">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                        <i class="fa fa-search text-space-blue/70"></i>
+                    </span>
+                    <input type="text" id="mobileSearch" placeholder="搜索员工代号..." 
+                           class="bg-galaxy-dark border border-space-blue/40 rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:border-space-blue transition-all w-full text-white search-input">
+                </div>
+            </div>
+        </section>
+
+        <!-- 数据概览和图表（星际仪表盘风格） -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
+            <!-- 统计卡片（星际数据模块） -->
+            <div class="lg:col-span-1 space-y-6">
+                <div class="bg-galaxy-dark rounded-xl p-6 border border-space-blue/30 animate-on-scroll glow-border-space hover:scale-[1.02] transition-transform">
+                    <h3 class="text-space-blue text-xl mb-4 flex items-center">
+                        <i class="fa fa-users mr-2"></i> 星际员工总数
+                    </h3>
+                    <p class="text-4xl font-bold text-white" id="totalEmployees">0</p>
+                    <p class="text-orbit-light text-sm mt-2">当前在役星际工作者</p>
+                </div>
+                
+                <div class="bg-galaxy-dark rounded-xl p-6 border border-nebula/30 animate-on-scroll glow-border-nebula hover:scale-[1.02] transition-transform" style="animation-delay: 0.2s">
+                    <h3 class="text-nebula text-xl mb-4 flex items-center">
+                        <i class="fa fa-check-circle mr-2"></i> 工时达标者
+                    </h3>
+                    <p class="text-4xl font-bold text-white" id="达标员工数">0</p>
+                    <p class="text-orbit-light text-sm mt-2">符合星际任务标准</p>
+                </div>
+                
+                <div class="bg-galaxy-dark rounded-xl p-6 border border-star-yellow/30 animate-on-scroll glow-border-star hover:scale-[1.02] transition-transform" style="animation-delay: 0.4s">
+                    <h3 class="text-star-yellow text-xl mb-4 flex items-center">
+                        <i class="fa fa-exclamation-triangle mr-2"></i> 待补工时者
+                    </h3>
+                    <p class="text-4xl font-bold text-white" id="异常员工数">0</p>
+                    <p class="text-orbit-light text-sm mt-2">需补充任务时长</p>
+                </div>
+            </div>
+            
+            <!-- 图表（星际数据可视化） -->
+            <div class="lg:col-span-2 bg-galaxy-dark rounded-xl p-6 border border-space-blue/30 animate-on-scroll">
+                <h3 class="text-space-blue text-xl mb-6 flex items-center">
+                    <i class="fa fa-bar-chart mr-2"></i> 9月工时分布图谱
+                </h3>
+                <div class="h-80 bg-void-black/50 rounded-lg p-4">
+                    <canvas id="workHoursChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- 员工工时表格（星际任务日志表格） -->
+        <section class="mb-16 animate-on-scroll">
+            <div class="bg-galaxy-dark rounded-xl overflow-hidden border border-space-blue/30">
+                <div class="p-6 border-b border-space-blue/30 flex flex-col md:flex-row justify-between items-start md:items-center">
+                    <div>
+                        <h3 class="text-space-blue text-xl flex items-center">
+                            <i class="fa fa-table mr-2"></i> 星际员工工时明细
+                        </h3>
+                        <p class="text-orbit-light mt-1">点击员工代号查看星际评价报告</p>
+                    </div>
+                    <div class="mt-4 md:mt-0 text-sm text-orbit-light">
+                        <span class="flex items-center"><i class="fa fa-info-circle text-star-yellow mr-1"></i> 本月标准工时：176小时</span>
+                    </div>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="bg-void-black/60">
+                                <th class="py-4 px-6 text-left text-star-yellow font-space">员工代号</th>
+                                <th class="py-4 px-6 text-left text-star-yellow font-space">9月1-7日</th>
+                                <th class="py-4 px-6 text-left text-star-yellow font-space">9月8-14日</th>
+                                <th class="py-4 px-6 text-left text-star-yellow font-space">9月15-21日</th>
+                                <th class="py-4 px-6 text-left text-star-yellow font-space">9月22-28日</th>
+                                <th class="py-4 px-6 text-left text-star-yellow font-space">9月29-30日</th>
+                                <th class="py-4 px-6 text-left text-star-yellow font-space">总工时</th>
+                                <th class="py-4 px-6 text-left text-star-yellow font-space">星际状态</th>
+                            </tr>
+                        </thead>
+                        <tbody id="employeesTableBody">
+                            <!-- 初始加载状态 -->
+                            <tr>
+                                <td colspan="8" class="py-8 text-center text-orbit-light">
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-16 h-16 border-4 border-dashed border-space-blue/30 rounded-full animate-spin-planet mb-4"></div>
+                                        加载星际员工数据中...
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-galaxy-dark border-t border-space-blue/30 py-6 relative z-10">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-orbit-light text-sm">
+                星际工时日志系统 &copy; 2025 | 星际联盟认证编号: ST-2025-09
+            </p>
+            <p class="text-space-blue/70 text-xs mt-2">
+                系统提示：9月28日为补班日，请各星际员工做好准备
+            </p>
+        </div>
+    </footer>
+
+    <!-- 员工详情弹窗（按工时状态加载对应Rick and Morty图片） -->
+    <div id="employeeModal" class="fixed inset-0 z-50 hidden modal-backdrop">
+        <div class="absolute inset-0 flex items-center justify-center p-4">
+            <div class="bg-void-black border-2 border-space-blue rounded-xl max-w-3xl w-full max-h-[90vh] overflow-hidden animate-glow-ship">
+                <div class="relative">
+                    <!-- 弹窗图片区域（按工时状态加载对应本地图） -->
+                    <div class="h-64 md:h-80 bg-galaxy-dark">
+                        <img id="modalImg" src="" alt="员工详情图" class="w-full h-full object-cover">
+                    </div>
+                    
+                    <!-- 关闭按钮 -->
+                    <button id="closeModal" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-void-black/80 flex items-center justify-center text-white hover:text-space-blue transition-colors z-10">
+                        <i class="fa fa-times text-xl"></i>
+                    </button>
+                </div>
+                
+                <div class="p-6">
+                    <h3 id="modalName" class="text-2xl font-space text-space-blue text-shadow-space mb-4"></h3>
+                    <div class="flex items-center mb-6 flex-wrap gap-2">
+                        <span id="modalTotal" class="px-4 py-2 rounded-full text-sm font-space"></span>
+                        <span id="modalStatus" class="px-4 py-2 rounded-full text-sm font-medium"></span>
+                    </div>
+                    
+                    <!-- 工时明细 -->
+                    <div class="mb-6">
+                        <h4 class="text-star-yellow font-space mb-2">9月工时明细</h4>
+                        <div class="grid grid-cols-2 md:grid-cols-5 gap-3 text-center">
+                            <div class="bg-galaxy-dark p-2 rounded-lg">
+                                <p class="text-xs text-orbit-light">9/1-7</p>
+                                <p id="detail1" class="text-lg font-bold"></p>
+                            </div>
+                            <div class="bg-galaxy-dark p-2 rounded-lg">
+                                <p class="text-xs text-orbit-light">9/8-14</p>
+                                <p id="detail2" class="text-lg font-bold"></p>
+                            </div>
+                            <div class="bg-galaxy-dark p-2 rounded-lg">
+                                <p class="text-xs text-orbit-light">9/15-21</p>
+                                <p id="detail3" class="text-lg font-bold"></p>
+                            </div>
+                            <div class="bg-galaxy-dark p-2 rounded-lg">
+                                <p class="text-xs text-orbit-light">9/22-28</p>
+                                <p id="detail4" class="text-lg font-bold"></p>
+                            </div>
+                            <div class="bg-galaxy-dark p-2 rounded-lg">
+                                <p class="text-xs text-orbit-light">9/29-30</p>
+                                <p id="detail5" class="text-lg font-bold"></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 星际评价 -->
+                    <div>
+                        <h4 class="text-star-yellow font-space mb-2">星际评价</h4>
+                        <p id="modalComment" class="text-orbit-light leading-relaxed"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. 员工工时数据（含测试数据，方便验证三种图片效果）
+        const employees = [
+            { name: "罗子皓", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "刘心奕", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "余颖", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "裴文华", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "苏捷", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "祝皓雯", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "陈锶蕙", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "易杨平", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "黎佳丽", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "李金璇", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "曾子荣", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "钟栋竞", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "游丽萍", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "陈佳鑫", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "庞芝婷", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "谢璇", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "何江萍", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "郭天艳", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "周双", hours: [8, 0, 0, 0, 0], total: 8 }, // 工时不足（测试Rick-Morty-2.jpg）
+            { name: "田静", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "李琳", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "巫尚贤", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "苏诗画", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "初华旭", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "陈洁", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "涂逸", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "李洁怡", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "李凯盈", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "高刘香", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "周子涵", hours: [32, 0, 0, 0, 0], total: 32 }, // 工时不足（测试Rick-Morty-2.jpg）
+            { name: "康篡娇", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "刘涛", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "何丽雅", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "尚兴越", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "施铖钰", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "苏琪", hours: [32, 0, 0, 0, 0], total: 32 }, // 工时不足（测试Rick-Morty-2.jpg）
+            { name: "缪月", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "胡洛晨", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "罗佳兰", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "章云燕", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "方含雨", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "简行峰", hours: [24, 0, 0, 0, 0], total: 24 }, // 工时不足（测试Rick-Morty-2.jpg）
+            { name: "柯均", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "胡杰婷", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "冶思杨", hours: [0, 0, 0, 0, 0], total: 0 }, // 工时不足（测试Rick-Morty-2.jpg）
+            { name: "董世杰", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "王天美", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "张根遥", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "高欣悦", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "龙建宇", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "杨巧巧", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "严芷欣", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "付锦鹿", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "颜瑜", hours: [40, 0, 0, 0, 0], total: 40 },
+            { name: "测试超额员工", hours: [48, 48, 48, 48, 20], total: 212 }, // 工时超额（测试Rick-Morty-1.jpg）
+            { name: "测试达标员工", hours: [36, 38, 38, 38, 26], total: 176 } // 工时正常（测试rick-and-morty3.jpg）
+        ];
+
+        // 2. DOM元素获取
+        const tableBody = document.getElementById('employeesTableBody');
+        const modal = document.getElementById('employeeModal');
+        const modalImg = document.getElementById('modalImg');
+        const modalName = document.getElementById('modalName');
+        const modalTotal = document.getElementById('modalTotal');
+        const modalStatus = document.getElementById('modalStatus');
+        const modalComment = document.getElementById('modalComment');
+        const detail1 = document.getElementById('detail1');
+        const detail2 = document.getElementById('detail2');
+        const detail3 = document.getElementById('detail3');
+        const detail4 = document.getElementById('detail4');
+        const detail5 = document.getElementById('detail5');
+        const closeModal = document.getElementById('closeModal');
+        const resetBtn = document.getElementById('resetBtn');
+        const globalSearch = document.getElementById('globalSearch');
+        const mobileSearch = document.getElementById('mobileSearch');
+        const totalEmployeesEl = document.getElementById('totalEmployees');
+        const 达标员工数El = document.getElementById('达标员工数');
+        const 异常员工数El = document.getElementById('异常员工数');
+        const chartEl = document.getElementById('workHoursChart');
+
+        // 3. 初始化统计数据
+        function initStats() {
+            totalEmployeesEl.textContent = employees.length;
+            const 达标数 = employees.filter(emp => emp.total === 176).length;
+            达标员工数El.textContent = 达标数;
+            异常员工数El.textContent = employees.length - 达标数;
+        }
+
+        // 4. 渲染员工表格
+        function renderTable(empList = employees) {
+            tableBody.innerHTML = '';
+            if (empList.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="py-8 text-center text-orbit-light">
+                            <div class="flex flex-col items-center">
+                                <i class="fa fa-search-minus text-4xl text-star-yellow mb-4"></i>
+                                未找到匹配的星际员工
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            empList.forEach((emp, idx) => {
+                const tr = document.createElement('tr');
+                tr.className = idx % 2 === 0 ? 'bg-void-black/30' : 'bg-galaxy-dark/50';
+                tr.classList.add('hover:bg-space-blue/10', 'transition-colors');
+
+                // 状态样式判断
+                let statusCls = '';
+                let statusText = '';
+                if (emp.total < 176) {
+                    statusCls = 'text-red-400 bg-red-900/20';
+                    statusText = '工时不足';
+                } else if (emp.total === 176) {
+                    statusCls = 'text-nebula bg-purple-900/20';
+                    statusText = '工时正常';
+                } else {
+                    statusCls = 'text-star-yellow bg-yellow-900/20';
+                    statusText = '已超额';
+                }
+
+                tr.innerHTML = `
+                    <td class="py-4 px-6 font-medium">
+                        <button class="emp-btn text-space-blue hover:text-nebula transition-colors flex items-center" 
+                                data-name="${emp.name}" 
+                                data-hours="${JSON.stringify(emp.hours)}" 
+                                data-total="${emp.total}">
+                            ${emp.name}
+                            <i class="fa fa-arrow-right ml-2 text-xs"></i>
+                        </button>
+                    </td>
+                    <td class="py-4 px-6 table-cell ${emp.hours[0] < 20 ? 'text-red-400' : emp.hours[0] > 40 ? 'text-star-yellow' : ''}">${emp.hours[0]}</td>
+                    <td class="py-4 px-6 table-cell ${emp.hours[1] < 20 ? 'text-red-400' : emp.hours[1] > 40 ? 'text-star-yellow' : ''}">${emp.hours[1]}</td>
+                    <td class="py-4 px-6 table-cell ${emp.hours[2] < 20 ? 'text-red-400' : emp.hours[2] > 40 ? 'text-star-yellow' : ''}">${emp.hours[2]}</td>
+                    <td class="py-4 px-6 table-cell ${emp.hours[3] < 20 ? 'text-red-400' : emp.hours[3] > 40 ? 'text-star-yellow' : ''}">${emp.hours[3]}</td>
+                    <td class="py-4 px-6 table-cell ${emp.hours[4] < 20 ? 'text-red-400' : emp.hours[4] > 40 ? 'text-star-yellow' : ''}">${emp.hours[4]}</td>
+                    <td class="py-4 px-6 font-bold ${emp.total < 176 ? 'text-red-400' : emp.total > 176 ? 'text-star-yellow' : 'text-nebula'}">${emp.total}</td>
+                    <td class="py-4 px-6">
+                        <span class="px-3 py-1 rounded-full text-xs font-medium ${statusCls}">${statusText}</span>
+                    </td>
+                `;
+                tableBody.appendChild(tr);
+            });
+
+            // 绑定弹窗触发事件
+            document.querySelectorAll('.emp-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const name = btn.getAttribute('data-name');
+                    const hours = JSON.parse(btn.getAttribute('data-hours'));
+                    const total = parseInt(btn.getAttribute('data-total'));
+                    showModal(name, hours, total);
+                });
+            });
+        }
+
+        // 5. 核心：按工时状态加载对应图片
+        // 工时不足 → Rick-Morty-2.jpg
+        // 工时正常 → rick-and-morty3.jpg
+        // 工时超额 → Rick-Morty-1.jpg
+        function showModal(name, hours, total) {
+            // 清空之前的抖动类，避免重复触发
+            modalImg.classList.remove('shake-active');
+            
+            // 弹窗基础信息
+            modalName.textContent = name;
+            detail1.textContent = hours[0];
+            detail2.textContent = hours[1];
+            detail3.textContent = hours[2];
+            detail4.textContent = hours[3];
+            detail5.textContent = hours[4];
+            modalTotal.textContent = `总工时：${total}小时`;
+
+            // 按工时状态分支处理（核心修改部分）
+            if (total < 176) {
+                // 👉 工时不足：加载本地Rick-Morty-2.jpg + 抖动
+                modalTotal.className = 'px-4 py-2 rounded-full text-sm font-space bg-red-900/30 text-red-400';
+                modalStatus.className = 'px-4 py-2 rounded-full text-sm font-medium bg-red-900/30 text-red-400';
+                modalStatus.textContent = '工时不足';
+                modalComment.textContent = `${name}，你的9月工时未达标（差额${176 - total}小时）！需在10月补班完成，否则将被分配至小行星采矿任务。`;
+                
+                // 加载本地Rick-Morty-2.jpg
+                modalImg.src = "Rick-Morty-2.jpg";
+                modalImg.alt = `${name}（工时不足）- Rick and Morty警示图`;
+                
+                // 图片加载成功后触发抖动
+                modalImg.onload = function() {
+                    setTimeout(() => modalImg.classList.add('shake-active'), 100);
+                };
+                
+                // 图片加载失败：备用警示风格图片（红色调）
+                modalImg.onerror = function() {
+                    this.src = "https://picsum.photos/id/1005/800/500"; // 备用警示图
+                    this.alt = `${name}（工时不足）- 备用警示图`;
+                    setTimeout(() => modalImg.classList.add('shake-active'), 100);
+                };
+
+            } else if (total === 176) {
+                // 👉 工时正常：加载本地rick-and-morty3.jpg + 轻微抖动
+                modalTotal.className = 'px-4 py-2 rounded-full text-sm font-space bg-purple-900/20 text-nebula';
+                modalStatus.className = 'px-4 py-2 rounded-full text-sm font-medium bg-purple-900/20 text-nebula';
+                modalStatus.textContent = '工时正常';
+                modalComment.textContent = `${name}，你的9月工时恰好达标！符合星际工作标准，可正常参与10月星际探索任务。`;
+                
+                // 加载本地rick-and-morty3.jpg
+                modalImg.src = "rick-and-morty3.jpg";
+                modalImg.alt = `${name}（工时正常）- Rick and Morty标准图`;
+                
+                // 图片加载成功后触发轻微抖动，保持一致性
+                modalImg.onload = function() {
+                    setTimeout(() => modalImg.classList.add('shake-active'), 100);
+                };
+                
+                // 图片加载失败：备用标准风格图片（紫色调）
+                modalImg.onerror = function() {
+                    this.src = "https://picsum.photos/id/1035/800/500"; // 备用标准图
+                    this.alt = `${name}（工时正常）- 备用标准图`;
+                    setTimeout(() => modalImg.classList.add('shake-active'), 100);
+                };
+
+            } else {
+                // 👉 工时超额：加载本地Rick-Morty-1.jpg + 抖动
+                modalTotal.className = 'px-4 py-2 rounded-full text-sm font-space bg-yellow-900/20 text-star-yellow';
+                modalStatus.className = 'px-4 py-2 rounded-full text-sm font-medium bg-yellow-900/20 text-star-yellow';
+                modalStatus.textContent = '已超额';
+                modalComment.textContent = `${name}，你太棒了！9月工时超额${total - 176}小时，获得"星际劳模"称号，可兑换3天调休或星际积分奖励！`;
+                
+                // 加载本地Rick-Morty-1.jpg
+                modalImg.src = "Rick-Morty-1.jpg";
+                modalImg.alt = `${name}（工时超额）- Rick and Morty庆祝图`;
+                
+                // 图片加载成功后触发抖动
+                modalImg.onload = function() {
+                    setTimeout(() => modalImg.classList.add('shake-active'), 100);
+                };
+                
+                // 图片加载失败：备用庆祝风格图片（黄色调）
+                modalImg.onerror = function() {
+                    this.src = "https://picsum.photos/id/1062/800/500"; // 备用庆祝图
+                    this.alt = `${name}（工时超额）- 备用庆祝图`;
+                    setTimeout(() => modalImg.classList.add('shake-active'), 100);
+                };
+            }
+
+            // 显示弹窗
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // 6. 关闭弹窗
+        function closeModalFunc() {
+            modal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        // 7. 搜索功能
+        function handleSearch(e) {
+            const val = e.target.value.toLowerCase().trim();
+            const filtered = employees.filter(emp => 
+                emp.name.toLowerCase().includes(val) || 
+                emp.total.toString().includes(val) || 
+                emp.hours.some(h => h.toString().includes(val))
+            );
+            renderTable(filtered);
+        }
+
+        // 8. 初始化工时图表
+        function initChart() {
+            const under = employees.filter(emp => emp.total < 176).length;
+            const normal = employees.filter(emp => emp.total === 176).length;
+            const over = employees.filter(emp => emp.total > 176).length;
+
+            new Chart(chartEl, {
+                type: 'doughnut',
+                data: {
+                    labels: ['工时不足', '工时正常', '已超额'],
+                    datasets: [{
+                        data: [under, normal, over],
+                        backgroundColor: [
+                            'rgba(239, 68, 68, 0.7)',
+                            'rgba(124, 58, 237, 0.7)',
+                            'rgba(251, 191, 36, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(239, 68, 68, 1)',
+                            'rgba(124, 58, 237, 1)',
+                            'rgba(251, 191, 36, 1)'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#94A3B8',
+                                font: { family: 'Orbitron', size: 12 },
+                                padding: 20
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(30, 41, 59, 0.9)',
+                            titleColor: '#1E40AF',
+                            bodyColor: 'white',
+                            borderColor: '#1E40AF',
+                            borderWidth: 1,
+                            padding: 12
+                        }
+                    },
+                    animation: { animateScale: true, animateRotate: true, duration: 2000 }
+                }
+            });
+        }
+
+        // 9. 滚动动画
+        function handleScroll() {
+            document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.85) {
+                    el.classList.add('visible');
+                }
+            });
+        }
+
+        // 10. 事件绑定
+        closeModal.addEventListener('click', closeModalFunc);
+        modal.addEventListener('click', (e) => e.target === modal && closeModalFunc());
+        resetBtn.addEventListener('click', () => {
+            globalSearch.value = '';
+            mobileSearch.value = '';
+            renderTable();
+        });
+        globalSearch.addEventListener('input', handleSearch);
+        mobileSearch.addEventListener('input', handleSearch);
+        window.addEventListener('scroll', handleScroll);
+
+        // 11. 页面初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            initStats();
+            renderTable();
+            initChart();
+            handleScroll();
+        });
+    </script>
+</body>
+</html>
