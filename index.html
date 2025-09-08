@@ -382,65 +382,65 @@
     </div>
 
     <script>
-        // 1. 员工工时数据（含测试数据，方便验证三种图片效果）
-        const employees = [
-            { name: "罗子皓", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "刘心奕", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "余颖", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "裴文华", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "苏捷", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "祝皓雯", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "陈锶蕙", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "易杨平", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "黎佳丽", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "李金璇", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "曾子荣", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "钟栋竞", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "游丽萍", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "陈佳鑫", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "庞芝婷", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "谢璇", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "何江萍", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "郭天艳", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "周双", hours: [8, 0, 0, 0, 0], total: 8 }, // 工时不足（测试Rick-Morty-2.jpg）
-            { name: "田静", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "李琳", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "巫尚贤", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "苏诗画", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "初华旭", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "陈洁", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "涂逸", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "李洁怡", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "李凯盈", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "高刘香", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "周子涵", hours: [32, 0, 0, 0, 0], total: 32 }, // 工时不足（测试Rick-Morty-2.jpg）
-            { name: "康篡娇", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "刘涛", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "何丽雅", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "尚兴越", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "施铖钰", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "苏琪", hours: [32, 0, 0, 0, 0], total: 32 }, // 工时不足（测试Rick-Morty-2.jpg）
-            { name: "缪月", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "胡洛晨", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "罗佳兰", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "章云燕", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "方含雨", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "简行峰", hours: [24, 0, 0, 0, 0], total: 24 }, // 工时不足（测试Rick-Morty-2.jpg）
-            { name: "柯均", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "胡杰婷", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "冶思杨", hours: [0, 0, 0, 0, 0], total: 0 }, // 工时不足（测试Rick-Morty-2.jpg）
-            { name: "董世杰", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "王天美", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "张根遥", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "高欣悦", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "龙建宇", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "杨巧巧", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "严芷欣", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "付锦鹿", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "颜瑜", hours: [40, 0, 0, 0, 0], total: 40 },
-            { name: "测试超额员工", hours: [48, 48, 48, 48, 20], total: 212 }, // 工时超额（测试Rick-Morty-1.jpg）
-            { name: "测试达标员工", hours: [36, 38, 38, 38, 26], total: 176 } // 工时正常（测试rick-and-morty3.jpg）
-        ];
+       // 1. 员工工时数据（含测试数据，方便验证三种图片效果）
+const employees = [
+    { name: "罗子皓", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "刘心奕", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "余颖", hours: [39, 37, 0, 0, 0], total: 76 },
+    { name: "裴文华", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "苏捷", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "祝皓雯", hours: [40, 32, 0, 0, 0], total: 72 },
+    { name: "陈锶蕙", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "易杨平", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "黎佳丽", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "李金璇", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "曾子荣", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "钟栋竞", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "游丽萍", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "陈佳鑫", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "庞芝婷", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "谢璇", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "何江萍", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "郭天艳", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "周双", hours: [8, 0, 0, 0, 0], total: 8 },
+    { name: "田静", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "李琳", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "巫尚贤", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "苏诗画", hours: [32, 40, 0, 0, 0], total: 72 },
+    { name: "初华旭", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "陈洁", hours: [48, 24, 0, 0, 0], total: 72 },
+    { name: "涂逸", hours: [24, 22, 0, 0, 0], total: 46 },
+    { name: "李洁怡", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "李凯盈", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "高刘香", hours: [41, 48, 0, 0, 0], total: 89 },
+    { name: "周子涵", hours: [32, 40, 0, 0, 0], total: 72 },
+    { name: "康篡娇", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "刘涛", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "何丽雅", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "尚兴越", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "施铖钰", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "苏琪", hours: [32, 40, 0, 0, 0], total: 72 },
+    { name: "缪月", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "胡洛晨", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "罗佳兰", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "章云燕", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "方含雨", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "简行峰", hours: [34, 40, 0, 0, 0], total: 74 },
+    { name: "柯均", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "胡杰婷", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "冶思杨", hours: [0, 0, 0, 0, 0], total: 0 },
+    { name: "董世杰", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "王天美", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "张根遥", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "高欣悦", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "龙建宇", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "杨巧巧", hours: [40, 40, 0, 0, 0], total: 80 },
+    { name: "严芷欣", hours: [0, 40, 0, 0, 0], total: 40 },
+    { name: "付锦鹿", hours: [0, 40, 0, 0, 0], total: 40 },
+    { name: "颜瑜", hours: [0, 40, 0, 0, 0], total: 40 },
+    { name: "测试超额员工", hours: [48, 48, 48, 48, 20], total: 212 },
+    { name: "测试达标员工", hours: [36, 38, 38, 38, 26], total: 176 }
+];
 
         // 2. DOM元素获取
         const tableBody = document.getElementById('employeesTableBody');
@@ -735,3 +735,4 @@
     </script>
 </body>
 </html>
+
