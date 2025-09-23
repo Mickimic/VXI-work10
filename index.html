@@ -158,18 +158,27 @@
             box-shadow: 0 0 12px rgba(30, 64, 175, 0.9), 0 0 24px rgba(30, 64, 175, 0.6);
         }
         
-        /* 行星旋转动画 */
+        /* 行星旋转动画（调整z-index避免遮挡内容） */
         .planet {
             border-radius: 50%;
             background: radial-gradient(circle, #FBBF24 0%, #F59E0B 100%);
             box-shadow: 0 0 20px rgba(251, 191, 36, 0.8);
             position: absolute;
-            z-index: 0;
+            z-index: -1; /* 置于底层，不遮挡内容 */
+        }
+        
+        /* 按钮点击反馈 */
+        .emp-btn, #resetBtn {
+            transition: all 0.2s ease;
+        }
+        
+        .emp-btn:active, #resetBtn:active {
+            transform: scale(0.95);
         }
     </style>
 </head>
 <body class="bg-void-black bg-nebula min-h-screen">
-    <!-- 行星装饰元素 -->
+    <!-- 行星装饰元素（调整位置避免遮挡关键内容） -->
     <div class="planet w-24 h-24 top-20 right-10 animate-spin-planet hidden lg:block"></div>
     <div class="planet w-16 h-16 bottom-40 left-10 animate-spin-planet" style="animation-duration: 25s; background: radial-gradient(circle, #1E40AF 0%, #0C4A6E 100%); box-shadow: 0 0 15px rgba(30, 64, 175, 0.8);"></div>
 
@@ -240,7 +249,7 @@
                         <i class="fa fa-check-circle mr-2"></i> 工时达标者
                     </h3>
                     <p class="text-4xl font-bold text-white" id="达标员工数">0</p>
-                    <p class="text-orbit-light text-sm mt-2">符合星际任务标准</p>
+                    <p class="text-orbit-light text-sm mt-2">符合星际任务标准（含超额）</p>
                 </div>
                 
                 <div class="bg-galaxy-dark rounded-xl p-6 border border-star-yellow/30 animate-on-scroll glow-border-star hover:scale-[1.02] transition-transform" style="animation-delay: 0.4s">
@@ -294,7 +303,7 @@
                         <tbody id="employeesTableBody">
                             <!-- 初始加载状态 -->
                             <tr>
-                                <td colspan="8" class="py-8 text-center text-orbit-light">
+                                <td colspan="7" class="py-8 text-center text-orbit-light">
                                     <div class="flex flex-col items-center">
                                         <div class="w-16 h-16 border-4 border-dashed border-space-blue/30 rounded-full animate-spin-planet mb-4"></div>
                                         加载星际员工数据中...
@@ -320,12 +329,12 @@
         </div>
     </footer>
 
-    <!-- 员工详情弹窗（按工时状态加载对应Rick and Morty图片） -->
+    <!-- 员工详情弹窗（按工时状态加载对应图片） -->
     <div id="employeeModal" class="fixed inset-0 z-50 hidden modal-backdrop">
         <div class="absolute inset-0 flex items-center justify-center p-4">
             <div class="bg-void-black border-2 border-space-blue rounded-xl max-w-3xl w-full max-h-[90vh] overflow-hidden animate-glow-ship">
                 <div class="relative">
-                    <!-- 弹窗图片区域（按工时状态加载对应本地图） -->
+                    <!-- 弹窗图片区域（按工时状态加载对应图） -->
                     <div class="h-64 md:h-80 bg-galaxy-dark">
                         <img id="modalImg" src="" alt="员工详情图" class="w-full h-full object-cover">
                     </div>
@@ -343,10 +352,10 @@
                         <span id="modalStatus" class="px-4 py-2 rounded-full text-sm font-medium"></span>
                     </div>
                     
-                    <!-- 工时明细 -->
+                    <!-- 工时明细（匹配4个时段数据，删除多余的9/29-30列） -->
                     <div class="mb-6">
                         <h4 class="text-star-yellow font-space mb-2">9月工时明细</h4>
-                        <div class="grid grid-cols-2 md:grid-cols-5 gap-3 text-center">
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
                             <div class="bg-galaxy-dark p-2 rounded-lg">
                                 <p class="text-xs text-orbit-light">9/1-7</p>
                                 <p id="detail1" class="text-lg font-bold"></p>
@@ -360,12 +369,8 @@
                                 <p id="detail3" class="text-lg font-bold"></p>
                             </div>
                             <div class="bg-galaxy-dark p-2 rounded-lg">
-                                <p class="text-xs text-orbit-light">9/22-28</p>
+                                <p class="text-xs text-orbit-light">9/22-30</p>
                                 <p id="detail4" class="text-lg font-bold"></p>
-                            </div>
-                            <div class="bg-galaxy-dark p-2 rounded-lg">
-                                <p class="text-xs text-orbit-light">9/29-30</p>
-                                <p id="detail5" class="text-lg font-bold"></p>
                             </div>
                         </div>
                     </div>
@@ -454,7 +459,6 @@ const employees = [
         const detail2 = document.getElementById('detail2');
         const detail3 = document.getElementById('detail3');
         const detail4 = document.getElementById('detail4');
-        const detail5 = document.getElementById('detail5');
         const closeModal = document.getElementById('closeModal');
         const resetBtn = document.getElementById('resetBtn');
         const globalSearch = document.getElementById('globalSearch');
@@ -464,21 +468,21 @@ const employees = [
         const 异常员工数El = document.getElementById('异常员工数');
         const chartEl = document.getElementById('workHoursChart');
 
-        // 3. 初始化统计数据
+        // 3. 初始化统计数据（修正达标逻辑：含超额员工）
         function initStats() {
             totalEmployeesEl.textContent = employees.length;
-            const 达标数 = employees.filter(emp => emp.total === 176).length;
+            const 达标数 = employees.filter(emp => emp.total >= 176).length; // 达标=正常+超额
             达标员工数El.textContent = 达标数;
             异常员工数El.textContent = employees.length - 达标数;
         }
 
-        // 4. 渲染员工表格
+        // 4. 渲染员工表格（修复列数不匹配、数组越界问题）
         function renderTable(empList = employees) {
             tableBody.innerHTML = '';
             if (empList.length === 0) {
                 tableBody.innerHTML = `
                     <tr>
-                        <td colspan="8" class="py-8 text-center text-orbit-light">
+                        <td colspan="7" class="py-8 text-center text-orbit-light">
                             <div class="flex flex-col items-center">
                                 <i class="fa fa-search-minus text-4xl text-star-yellow mb-4"></i>
                                 未找到匹配的星际员工
@@ -508,6 +512,7 @@ const employees = [
                     statusText = '已超额';
                 }
 
+                // 修复：仅4个时段列，与thead列数匹配（7列）
                 tr.innerHTML = `
                     <td class="py-4 px-6 font-medium">
                         <button class="emp-btn text-space-blue hover:text-nebula transition-colors flex items-center" 
@@ -522,8 +527,7 @@ const employees = [
                     <td class="py-4 px-6 table-cell ${emp.hours[1] < 20 ? 'text-red-400' : emp.hours[1] > 40 ? 'text-star-yellow' : ''}">${emp.hours[1]}</td>
                     <td class="py-4 px-6 table-cell ${emp.hours[2] < 20 ? 'text-red-400' : emp.hours[2] > 40 ? 'text-star-yellow' : ''}">${emp.hours[2]}</td>
                     <td class="py-4 px-6 table-cell ${emp.hours[3] < 20 ? 'text-red-400' : emp.hours[3] > 40 ? 'text-star-yellow' : ''}">${emp.hours[3]}</td>
-                    <td class="py-4 px-6 table-cell ${emp.hours[4] < 20 ? 'text-red-400' : emp.hours[4] > 40 ? 'text-star-yellow' : ''}">${emp.hours[4]}</td>
-                    <td class="py-4 px-6 font-bold ${emp.total < 176 ? 'text-red-400' : emp.total > 176 ? 'text-star-yellow' : 'text-nebula'}">${emp.total}</td>
+                    <td class="py-4 px-6 table-cell ${emp.total < 176 ? 'text-red-400' : emp.total > 176 ? 'text-star-yellow' : 'text-nebula'} font-bold">${emp.total}</td>
                     <td class="py-4 px-6">
                         <span class="px-3 py-1 rounded-full text-xs font-medium ${statusCls}">${statusText}</span>
                     </td>
@@ -542,10 +546,7 @@ const employees = [
             });
         }
 
-        // 5. 核心：按工时状态加载对应图片
-        // 工时不足 → Rick-Morty-2.jpg
-        // 工时正常 → rick-and-morty3.jpg
-        // 工时超额 → Rick-Morty-1.jpg
+        // 5. 弹窗逻辑（修复时段文字，匹配4个时段数据）
         function showModal(name, hours, total) {
             // 清空之前的抖动类，避免重复触发
             modalImg.classList.remove('shake-active');
@@ -556,76 +557,58 @@ const employees = [
             detail2.textContent = hours[1];
             detail3.textContent = hours[2];
             detail4.textContent = hours[3];
-            detail5.textContent = hours[4];
             modalTotal.textContent = `总工时：${total}小时`;
 
-            // 按工时状态分支处理（核心修改部分）
+            // 按工时状态分支处理
             if (total < 176) {
-                // 👉 工时不足：加载本地Rick-Morty-2.jpg + 抖动
+                // 工时不足：红色调样式 + 警示图
                 modalTotal.className = 'px-4 py-2 rounded-full text-sm font-space bg-red-900/30 text-red-400';
                 modalStatus.className = 'px-4 py-2 rounded-full text-sm font-medium bg-red-900/30 text-red-400';
                 modalStatus.textContent = '工时不足';
                 modalComment.textContent = `${name}，你的9月工时未达标（差额${176 - total}小时）！需在10月补班完成，否则将被分配至小行星采矿任务。`;
                 
-                // 加载本地Rick-Morty-2.jpg
+                // 加载本地图（优先级：本地 → 备用）
                 modalImg.src = "Rick-Morty-2.jpg";
-                modalImg.alt = `${name}（工时不足）- Rick and Morty警示图`;
+                modalImg.alt = `${name}（工时不足）- 星际警示图`;
                 
                 // 图片加载成功后触发抖动
-                modalImg.onload = function() {
-                    setTimeout(() => modalImg.classList.add('shake-active'), 100);
-                };
-                
-                // 图片加载失败：备用警示风格图片（红色调）
-                modalImg.onerror = function() {
-                    this.src = "https://picsum.photos/id/1005/800/500"; // 备用警示图
-                    this.alt = `${name}（工时不足）- 备用警示图`;
+                modalImg.onload = () => setTimeout(() => modalImg.classList.add('shake-active'), 100);
+                // 加载失败降级
+                modalImg.onerror = () => {
+                    modalImg.src = "https://picsum.photos/id/1005/800/500"; // 红色调备用图
+                    modalImg.alt = `${name}（工时不足）- 备用警示图`;
                     setTimeout(() => modalImg.classList.add('shake-active'), 100);
                 };
 
             } else if (total === 176) {
-                // 👉 工时正常：加载本地rick-and-morty3.jpg + 轻微抖动
+                // 工时正常：紫色调样式 + 标准图
                 modalTotal.className = 'px-4 py-2 rounded-full text-sm font-space bg-purple-900/20 text-nebula';
                 modalStatus.className = 'px-4 py-2 rounded-full text-sm font-medium bg-purple-900/20 text-nebula';
                 modalStatus.textContent = '工时正常';
                 modalComment.textContent = `${name}，你的9月工时恰好达标！符合星际工作标准，可正常参与10月星际探索任务。`;
                 
-                // 加载本地rick-and-morty3.jpg
                 modalImg.src = "rick-and-morty3.jpg";
-                modalImg.alt = `${name}（工时正常）- Rick and Morty标准图`;
-                
-                // 图片加载成功后触发轻微抖动，保持一致性
-                modalImg.onload = function() {
-                    setTimeout(() => modalImg.classList.add('shake-active'), 100);
-                };
-                
-                // 图片加载失败：备用标准风格图片（紫色调）
-                modalImg.onerror = function() {
-                    this.src = "https://picsum.photos/id/1035/800/500"; // 备用标准图
-                    this.alt = `${name}（工时正常）- 备用标准图`;
+                modalImg.alt = `${name}（工时正常）- 星际标准图`;
+                modalImg.onload = () => setTimeout(() => modalImg.classList.add('shake-active'), 100);
+                modalImg.onerror = () => {
+                    modalImg.src = "https://picsum.photos/id/1035/800/500"; // 紫色调备用图
+                    modalImg.alt = `${name}（工时正常）- 备用标准图`;
                     setTimeout(() => modalImg.classList.add('shake-active'), 100);
                 };
 
             } else {
-                // 👉 工时超额：加载本地Rick-Morty-1.jpg + 抖动
+                // 工时超额：黄色调样式 + 庆祝图
                 modalTotal.className = 'px-4 py-2 rounded-full text-sm font-space bg-yellow-900/20 text-star-yellow';
                 modalStatus.className = 'px-4 py-2 rounded-full text-sm font-medium bg-yellow-900/20 text-star-yellow';
                 modalStatus.textContent = '已超额';
                 modalComment.textContent = `${name}，你太棒了！9月工时超额${total - 176}小时，获得"星际劳模"称号，可兑换3天调休或星际积分奖励！`;
                 
-                // 加载本地Rick-Morty-1.jpg
                 modalImg.src = "Rick-Morty-1.jpg";
-                modalImg.alt = `${name}（工时超额）- Rick and Morty庆祝图`;
-                
-                // 图片加载成功后触发抖动
-                modalImg.onload = function() {
-                    setTimeout(() => modalImg.classList.add('shake-active'), 100);
-                };
-                
-                // 图片加载失败：备用庆祝风格图片（黄色调）
-                modalImg.onerror = function() {
-                    this.src = "https://picsum.photos/id/1062/800/500"; // 备用庆祝图
-                    this.alt = `${name}（工时超额）- 备用庆祝图`;
+                modalImg.alt = `${name}（工时超额）- 星际庆祝图`;
+                modalImg.onload = () => setTimeout(() => modalImg.classList.add('shake-active'), 100);
+                modalImg.onerror = () => {
+                    modalImg.src = "https://picsum.photos/id/1062/800/500"; // 黄色调备用图
+                    modalImg.alt = `${name}（工时超额）- 备用庆祝图`;
                     setTimeout(() => modalImg.classList.add('shake-active'), 100);
                 };
             }
@@ -641,7 +624,7 @@ const employees = [
             document.body.style.overflow = '';
         }
 
-        // 7. 搜索功能
+        // 7. 搜索功能（支持姓名、工时、总工时匹配）
         function handleSearch(e) {
             const val = e.target.value.toLowerCase().trim();
             const filtered = employees.filter(emp => 
@@ -652,7 +635,7 @@ const employees = [
             renderTable(filtered);
         }
 
-        // 8. 初始化工时图表
+        // 8. 初始化工时图表（修正数据逻辑）
         function initChart() {
             const under = employees.filter(emp => emp.total < 176).length;
             const normal = employees.filter(emp => emp.total === 176).length;
@@ -703,11 +686,12 @@ const employees = [
             });
         }
 
-        // 9. 滚动动画
+        // 9. 滚动动画（优化触发时机）
         function handleScroll() {
             document.querySelectorAll('.animate-on-scroll').forEach(el => {
                 const rect = el.getBoundingClientRect();
-                if (rect.top < window.innerHeight * 0.85) {
+                const triggerPos = window.innerHeight * 0.85;
+                if (rect.top < triggerPos && rect.bottom > 0) {
                     el.classList.add('visible');
                 }
             });
@@ -720,6 +704,9 @@ const employees = [
             globalSearch.value = '';
             mobileSearch.value = '';
             renderTable();
+            // 重置滚动动画
+            document.querySelectorAll('.animate-on-scroll').forEach(el => el.classList.remove('visible'));
+            setTimeout(handleScroll, 100);
         });
         globalSearch.addEventListener('input', handleSearch);
         mobileSearch.addEventListener('input', handleSearch);
@@ -735,14 +722,3 @@ const employees = [
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
