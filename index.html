@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>星际工时日志 - 9月特辑</title>
+    <title>星际工时日志 - 10月特辑</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
-    <!-- 修正Orbitron字体加载 -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- 配置Tailwind自定义颜色和字体（星际探险主题） -->
     <script>
         tailwind.config = {
             theme: {
@@ -49,7 +47,6 @@
         }
     </script>
     
-    <!-- 自定义工具类 -->
     <style type="text/tailwindcss">
         @layer utilities {
             .text-shadow-space {
@@ -80,18 +77,16 @@
     </style>
     
     <style>
-        /* 基础样式 */
         body {
             background-color: #0F172A;
             color: #ffffff;
             overflow-x: hidden;
-            background-image: url('https://picsum.photos/id/1040/1920/1080'); /* 星云背景图 */
+            background-image: url('https://picsum.photos/id/1040/1920/1080');
             background-size: cover;
             background-attachment: fixed;
             background-position: center;
         }
         
-        /* 滚动条样式 */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -110,7 +105,6 @@
             background: #7C3AED;
         }
         
-        /* 图片抖动动画（所有状态统一效果） */
         @keyframes imgShake {
             0% { transform: translateX(0); }
             20% { transform: translateX(-8px); }
@@ -120,10 +114,9 @@
             100% { transform: translateX(0); }
         }
         .shake-active {
-            animation: imgShake 0.8s ease-in-out 1; /* 统一0.8秒单次抖动 */
+            animation: imgShake 0.8s ease-in-out 1;
         }
         
-        /* 动画效果 */
         .animate-on-scroll {
             opacity: 0;
             transform: translateY(25px);
@@ -135,14 +128,12 @@
             transform: translateY(0);
         }
         
-        /* 宇航员弹窗背景模糊效果 */
         .modal-backdrop {
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             background-color: rgba(15, 23, 42, 0.7);
         }
         
-        /* 表格单元格动画 */
         .table-cell {
             transition: all 0.3s ease;
         }
@@ -153,21 +144,18 @@
             border-radius: 4px;
         }
         
-        /* 搜索框动画 */
         .search-input:focus {
             box-shadow: 0 0 12px rgba(30, 64, 175, 0.9), 0 0 24px rgba(30, 64, 175, 0.6);
         }
         
-        /* 行星旋转动画（调整z-index避免遮挡内容） */
         .planet {
             border-radius: 50%;
             background: radial-gradient(circle, #FBBF24 0%, #F59E0B 100%);
             box-shadow: 0 0 20px rgba(251, 191, 36, 0.8);
             position: absolute;
-            z-index: -1; /* 置于底层，不遮挡内容 */
+            z-index: -1;
         }
         
-        /* 按钮点击反馈 */
         .emp-btn, #resetBtn {
             transition: all 0.2s ease;
         }
@@ -178,11 +166,9 @@
     </style>
 </head>
 <body class="bg-void-black bg-nebula min-h-screen">
-    <!-- 行星装饰元素（调整位置避免遮挡关键内容） -->
     <div class="planet w-24 h-24 top-20 right-10 animate-spin-planet hidden lg:block"></div>
     <div class="planet w-16 h-16 bottom-40 left-10 animate-spin-planet" style="animation-duration: 25s; background: radial-gradient(circle, #1E40AF 0%, #0C4A6E 100%); box-shadow: 0 0 15px rgba(30, 64, 175, 0.8);"></div>
 
-    <!-- 顶部导航（星际飞船控制台风格） -->
     <header class="relative z-10 border-b border-space-blue/40 bg-void-black/90 backdrop-blur-sm sticky top-0">
         <div class="container mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
             <div class="flex items-center mb-4 md:mb-0">
@@ -190,7 +176,7 @@
                     <i class="fa fa-rocket text-space-blue text-2xl transform rotate-45"></i>
                 </div>
                 <h1 class="text-2xl md:text-3xl font-space text-space-blue text-shadow-space">
-                    星际工时日志 9.0
+                    星际工时日志 10.0
                 </h1>
             </div>
             
@@ -211,17 +197,15 @@
     </header>
 
     <main class="container mx-auto px-4 py-8 relative z-10">
-        <!-- 页面标题和简介（星际任务说明） -->
         <section class="mb-12 animate-on-scroll">
             <div class="text-center max-w-3xl mx-auto">
                 <h2 class="text-[clamp(1.8rem,5vw,3rem)] font-space text-star-yellow text-shadow-star mb-4">
-                    9月星际员工工时系统
+                    10月星际员工工时系统
                 </h2>
                 <p class="text-orbit-light text-lg mb-6">
-                    欢迎来到9月星际工时控制台！本月标准工时176小时，请确保你的任务时长达标，避免被分配到小行星采矿任务。
+                    欢迎来到10月星际工时控制台！本月标准工时176小时，请确保你的任务时长达标，避免被分配到小行星采矿任务。
                 </p>
                 
-                <!-- 移动端搜索框 -->
                 <div class="relative md:hidden mb-6">
                     <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                         <i class="fa fa-search text-space-blue/70"></i>
@@ -232,9 +216,7 @@
             </div>
         </section>
 
-        <!-- 数据概览和图表（星际仪表盘风格） -->
         <section class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
-            <!-- 统计卡片（星际数据模块） -->
             <div class="lg:col-span-1 space-y-6">
                 <div class="bg-galaxy-dark rounded-xl p-6 border border-space-blue/30 animate-on-scroll glow-border-space hover:scale-[1.02] transition-transform">
                     <h3 class="text-space-blue text-xl mb-4 flex items-center">
@@ -261,10 +243,9 @@
                 </div>
             </div>
             
-            <!-- 图表（星际数据可视化） -->
             <div class="lg:col-span-2 bg-galaxy-dark rounded-xl p-6 border border-space-blue/30 animate-on-scroll">
                 <h3 class="text-space-blue text-xl mb-6 flex items-center">
-                    <i class="fa fa-bar-chart mr-2"></i> 9月工时分布图谱
+                    <i class="fa fa-bar-chart mr-2"></i> 10月工时分布图谱
                 </h3>
                 <div class="h-80 bg-void-black/50 rounded-lg p-4">
                     <canvas id="workHoursChart"></canvas>
@@ -272,7 +253,6 @@
             </div>
         </section>
 
-        <!-- 员工工时表格（星际任务日志表格） -->
         <section class="mb-16 animate-on-scroll">
             <div class="bg-galaxy-dark rounded-xl overflow-hidden border border-space-blue/30">
                 <div class="p-6 border-b border-space-blue/30 flex flex-col md:flex-row justify-between items-start md:items-center">
@@ -292,16 +272,15 @@
                         <thead>
                             <tr class="bg-void-black/60">
                                 <th class="py-4 px-6 text-left text-star-yellow font-space">员工代号</th>
-                                <th class="py-4 px-6 text-left text-star-yellow font-space">9月1-7日</th>
-                                <th class="py-4 px-6 text-left text-star-yellow font-space">9月8-14日</th>
-                                <th class="py-4 px-6 text-left text-star-yellow font-space">9月15-21日</th>
-                                <th class="py-4 px-6 text-left text-star-yellow font-space">9月22-30日</th>
+                                <th class="py-4 px-6 text-left text-star-yellow font-space">10月1-12日</th>
+                                <th class="py-4 px-6 text-left text-star-yellow font-space">10月13-19日</th>
+                                <th class="py-4 px-6 text-left text-star-yellow font-space">10月20-26日</th>
+                                <th class="py-4 px-6 text-left text-star-yellow font-space">10月27-31日</th>
                                 <th class="py-4 px-6 text-left text-star-yellow font-space">总工时</th>
                                 <th class="py-4 px-6 text-left text-star-yellow font-space">星际状态</th>
                             </tr>
                         </thead>
                         <tbody id="employeesTableBody">
-                            <!-- 初始加载状态 -->
                             <tr>
                                 <td colspan="7" class="py-8 text-center text-orbit-light">
                                     <div class="flex flex-col items-center">
@@ -317,29 +296,25 @@
         </section>
     </main>
 
-    <!-- 页脚 -->
     <footer class="bg-galaxy-dark border-t border-space-blue/30 py-6 relative z-10">
         <div class="container mx-auto px-4 text-center">
             <p class="text-orbit-light text-sm">
-                星际工时日志系统 &copy; 2025 | 星际联盟认证编号: ST-2025-09
+                星际工时日志系统 &copy; 2025 | 星际联盟认证编号: ST-2025-10
             </p>
             <p class="text-space-blue/70 text-xs mt-2">
-                系统提示：9月28日为补班日，请各星际员工做好准备
+                系统提示：10月26日为星际任务结算日，请各员工确保工时数据准确
             </p>
         </div>
     </footer>
 
-    <!-- 员工详情弹窗（按工时状态加载对应图片） -->
     <div id="employeeModal" class="fixed inset-0 z-50 hidden modal-backdrop">
         <div class="absolute inset-0 flex items-center justify-center p-4">
             <div class="bg-void-black border-2 border-space-blue rounded-xl max-w-3xl w-full max-h-[90vh] overflow-hidden animate-glow-ship">
                 <div class="relative">
-                    <!-- 弹窗图片区域（按工时状态加载对应图） -->
                     <div class="h-64 md:h-80 bg-galaxy-dark">
                         <img id="modalImg" src="" alt="员工详情图" class="w-full h-full object-cover">
                     </div>
                     
-                    <!-- 关闭按钮 -->
                     <button id="closeModal" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-void-black/80 flex items-center justify-center text-white hover:text-space-blue transition-colors z-10">
                         <i class="fa fa-times text-xl"></i>
                     </button>
@@ -352,30 +327,28 @@
                         <span id="modalStatus" class="px-4 py-2 rounded-full text-sm font-medium"></span>
                     </div>
                     
-                    <!-- 工时明细（匹配4个时段数据，删除多余的9/29-30列） -->
                     <div class="mb-6">
-                        <h4 class="text-star-yellow font-space mb-2">9月工时明细</h4>
+                        <h4 class="text-star-yellow font-space mb-2">10月工时明细</h4>
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
                             <div class="bg-galaxy-dark p-2 rounded-lg">
-                                <p class="text-xs text-orbit-light">9/1-7</p>
+                                <p class="text-xs text-orbit-light">10/1-12</p>
                                 <p id="detail1" class="text-lg font-bold"></p>
                             </div>
                             <div class="bg-galaxy-dark p-2 rounded-lg">
-                                <p class="text-xs text-orbit-light">9/8-14</p>
+                                <p class="text-xs text-orbit-light">10/13-19</p>
                                 <p id="detail2" class="text-lg font-bold"></p>
                             </div>
                             <div class="bg-galaxy-dark p-2 rounded-lg">
-                                <p class="text-xs text-orbit-light">9/15-21</p>
+                                <p class="text-xs text-orbit-light">10/20-26</p>
                                 <p id="detail3" class="text-lg font-bold"></p>
                             </div>
                             <div class="bg-galaxy-dark p-2 rounded-lg">
-                                <p class="text-xs text-orbit-light">9/22-30</p>
+                                <p class="text-xs text-orbit-light">10/27-31</p>
                                 <p id="detail4" class="text-lg font-bold"></p>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- 星际评价 -->
                     <div>
                         <h4 class="text-star-yellow font-space mb-2">星际评价</h4>
                         <p id="modalComment" class="text-orbit-light leading-relaxed"></p>
@@ -387,64 +360,66 @@
 
     <script>
 const employees = [
-    { name: "罗子皓", hours: [40, 56, 53, 66], total: 215 },
-    { name: "刘心奕", hours: [40, 41, 48, 47], total: 176 },
-    { name: "余颖", hours: [39, 41, 40, 56], total: 176 },
-    { name: "裴文华", hours: [40, 48, 48, 64], total: 200 },
-    { name: "苏捷", hours: [40, 53, 49, 68], total: 210 },
-    { name: "祝皓雯", hours: [40, 32, 40, 56], total: 168 },
-    { name: "陈锶蕙", hours: [40, 58, 53, 56], total: 207 },
-    { name: "易杨平", hours: [40, 45, 53, 56], total: 194 },
-    { name: "黎佳丽", hours: [40, 40, 40, 64], total: 184 },
-    { name: "李金璇", hours: [40, 71, 66, 76], total: 253 },
-    { name: "曾子荣", hours: [40, 42, 48, 56], total: 186 },
-    { name: "钟栋竞", hours: [40, 71, 66, 76], total: 253 },
-    { name: "游丽萍", hours: [40, 56, 56, 64], total: 216 },
-    { name: "陈佳鑫", hours: [40, 40, 48, 56], total: 184 },
-    { name: "庞芝婷", hours: [40, 45, 53, 56], total: 194 },
-    { name: "谢璇", hours: [40, 45, 66, 64], total: 215 },
-    { name: "何江萍", hours: [40, 71, 66, 76], total: 253 },
-    { name: "郭天艳", hours: [40, 48, 48, 56], total: 192 },
-    { name: "周双", hours: [8, 0, 0, 0], total: 8 },
-    { name: "田静", hours: [40, 58, 53, 66], total: 217 },
-    { name: "李琳", hours: [40, 32, 48, 64], total: 184 },
-    { name: "巫尚贤", hours: [40, 40, 40, 48], total: 168 },
-    { name: "苏诗画", hours: [32, 40, 40, 56], total: 168 },
-    { name: "初华旭", hours: [40, 40, 40, 56], total: 176 },
-    { name: "陈洁", hours: [48, 32, 40, 56], total: 176 },
-    { name: "涂逸", hours: [16, 6, 0, 0], total: 22 },
-    { name: "李洁怡", hours: [40, 40, 40, 56], total: 176 },
-    { name: "李凯盈", hours: [40, 40, 24, 48], total: 152 },
-    { name: "高刘香", hours: [41, 39, 27, 46], total: 153 },
-    { name: "周子涵", hours: [32, 41, 41, 55], total: 169 },
-    { name: "康篡娇", hours: [40, 66, 66, 76], total: 248 },
-    { name: "刘涛", hours: [40, 66, 66, 76], total: 248 },
-    { name: "何丽雅", hours: [40, 40, 33, 41], total: 154 },
-    { name: "尚兴越", hours: [40, 48, 48, 56], total: 192 },
-    { name: "施铖钰", hours: [40, 64, 24, 0], total: 128 },
-    { name: "苏琪", hours: [32, 46, 40, 56], total: 174 },
-    { name: "缪月", hours: [40, 40, 40, 56], total: 176 },
-    { name: "胡洛晨", hours: [40, 53, 0, 0], total: 93 },
-    { name: "罗佳兰", hours: [40, 63, 66, 76], total: 245 },
-    { name: "章云燕", hours: [40, 61, 66, 76], total: 243 },
-    { name: "方含雨", hours: [40, 40, 40, 56], total: 176 },
-    { name: "简行峰", hours: [34, 69, 72, 55], total: 230 },
-    { name: "董世杰", hours: [40, 45, 0, 0], total: 85 },
-    { name: "王天美", hours: [40, 0, 0, 0], total: 40 },
-    { name: "张根遥", hours: [40, 56, 0, 0], total: 96 },
-    { name: "高欣悦", hours: [40, 48, 48, 72], total: 208 },
-    { name: "龙建宇", hours: [40, 40, 40, 56], total: 176 },
-    { name: "杨巧巧", hours: [40, 38, 40, 56], total: 174 },
-    { name: "严芷欣", hours: [40, 40, 40, 56], total: 176 },
-    { name: "付锦鹿", hours: [40, 40, 48, 64], total: 192 },
-    { name: "颜瑜", hours: [40, 40, 56, 72], total: 208 },
-    { name: "井嫚君", hours: [0, 40, 40, 56], total: 136 },
-    { name: "郭家慧", hours: [0, 40, 0, 0], total: 40 },
-    { name: "刘暄超", hours: [0, 40, 38, 56], total: 134 },
-    { name: "周洁冉", hours: [0, 40, 40, 56], total: 136 }
+    { name: "罗子皓", hours: [80, 40, 40, 40], total: 200 },
+    { name: "刘心奕", hours: [80, 40, 24, 40], total: 184 },
+    { name: "余颖", hours: [32, 40, 40, 40], total: 152 },
+    { name: "裴文华", hours: [56, 40, 40, 40], total: 176 },
+    { name: "苏捷", hours: [64, 40, 40, 40], total: 184 },
+    { name: "祝皓雯", hours: [32, 40, 40, 40], total: 152 },
+    { name: "陈锶蕙", hours: [80, 40, 40, 40], total: 200 },
+    { name: "易杨平", hours: [95, 33, 32, 40], total: 200 },
+    { name: "黎佳丽", hours: [40, 40, 40, 40], total: 160 },
+    { name: "李金璇", hours: [80, 40, 40, 40], total: 200 },
+    { name: "曾子荣", hours: [64, 40, 40, 32], total: 176 },
+    { name: "钟栋竞", hours: [80, 40, 40, 40], total: 200 },
+    { name: "游丽萍", hours: [80, 40, 40, 40], total: 200 },
+    { name: "陈佳鑫", hours: [64, 40, 40, 40], total: 184 },
+    { name: "庞芝婷", hours: [40, 40, 40, 40], total: 160 },
+    { name: "谢璇", hours: [69, 47, 40, 40], total: 196 },
+    { name: "何江萍", hours: [80, 40, 40, 40], total: 200 },
+    { name: "郭天艳", hours: [40, 40, 40, 40], total: 160 },
+    { name: "田静", hours: [80, 40, 40, 40], total: 200 },
+    { name: "李琳", hours: [32, 40, 40, 40], total: 152 },
+    { name: "巫尚贤", hours: [32, 40, 40, 40], total: 152 },
+    { name: "苏诗画", hours: [32, 40, 40, 40], total: 152 },
+    { name: "初华旭", hours: [32, 40, 40, 40], total: 152 },
+    { name: "陈洁", hours: [32, 40, 40, 40], total: 152 },
+    { name: "李洁怡", hours: [48, 40, 40, 40], total: 168 },
+    { name: "李凯盈", hours: [32, 40, 40, 40], total: 152 },
+    { name: "高刘香", hours: [32, 40, 40, 40], total: 152 },
+    { name: "周子涵", hours: [64, 40, 40, 40], total: 184 },
+    { name: "康篡娇", hours: [80, 40, 40, 40], total: 200 },
+    { name: "刘涛", hours: [80, 40, 40, 40], total: 200 },
+    { name: "何丽雅", hours: [32, 40, 40, 40], total: 152 },
+    { name: "尚兴越", hours: [80, 40, 40, 40], total: 200 },
+    { name: "苏琪", hours: [32, 40, 40, 40], total: 152 },
+    { name: "缪月", hours: [32, 40, 40, 40], total: 152 },
+    { name: "罗佳兰", hours: [80, 40, 40, 40], total: 200 },
+    { name: "章云燕", hours: [80, 40, 40, 40], total: 200 },
+    { name: "方含雨", hours: [56, 40, 40, 40], total: 176 },
+    { name: "简行峰", hours: [80, 40, 40, 40], total: 200 },
+    { name: "高欣悦", hours: [80, 40, 40, 40], total: 200 },
+    { name: "龙建宇", hours: [32, 40, 40, 40], total: 152 },
+    { name: "杨巧巧", hours: [32, 40, 40, 40], total: 152 },
+    { name: "严芷欣", hours: [32, 40, 40, 40], total: 152 },
+    { name: "付锦鹿", hours: [60, 37, 39, 40], total: 176 },
+    { name: "颜瑜", hours: [64, 40, 40, 40], total: 184 },
+    { name: "井嫚君", hours: [32, 40, 40, 40], total: 152 },
+    { name: "刘暄超", hours: [48, 40, 40, 40], total: 168 },
+    { name: "周洁冉", hours: [32, 40, 40, 40], total: 152 },
+    { name: "余捷楠", hours: [32, 40, 40, 40], total: 152 },
+    { name: "周双", hours: [56, 40, 40, 40], total: 176 },
+    { name: "鲁杨", hours: [32, 40, 40, 40], total: 152 },
+    { name: "伍秋杏", hours: [32, 40, 40, 40], total: 152 },
+    { name: "王璐瑶", hours: [32, 40, 40, 40], total: 152 },
+    { name: "王君怡", hours: [32, 40, 40, 40], total: 152 },
+    { name: "袁欢", hours: [32, 40, 40, 40], total: 152 },
+    { name: "胡丁元", hours: [32, 40, 40, 40], total: 152 },
+    { name: "王梓舒", hours: [32, 40, 40, 40], total: 152 },
+    { name: "黄锡杰", hours: [32, 40, 40, 40], total: 152 },
+    { name: "邹晓彤", hours: [32, 40, 40, 40], total: 152 }
 ];
 
-        // 2. DOM元素获取
         const tableBody = document.getElementById('employeesTableBody');
         const modal = document.getElementById('employeeModal');
         const modalImg = document.getElementById('modalImg');
@@ -465,15 +440,13 @@ const employees = [
         const 异常员工数El = document.getElementById('异常员工数');
         const chartEl = document.getElementById('workHoursChart');
 
-        // 3. 初始化统计数据（修正达标逻辑：含超额员工）
         function initStats() {
             totalEmployeesEl.textContent = employees.length;
-            const 达标数 = employees.filter(emp => emp.total >= 176).length; // 达标=正常+超额
+            const 达标数 = employees.filter(emp => emp.total >= 176).length;
             达标员工数El.textContent = 达标数;
             异常员工数El.textContent = employees.length - 达标数;
         }
 
-        // 4. 渲染员工表格（修复列数不匹配、数组越界问题）
         function renderTable(empList = employees) {
             tableBody.innerHTML = '';
             if (empList.length === 0) {
@@ -495,7 +468,6 @@ const employees = [
                 tr.className = idx % 2 === 0 ? 'bg-void-black/30' : 'bg-galaxy-dark/50';
                 tr.classList.add('hover:bg-space-blue/10', 'transition-colors');
 
-                // 状态样式判断
                 let statusCls = '';
                 let statusText = '';
                 if (emp.total < 176) {
@@ -509,7 +481,6 @@ const employees = [
                     statusText = '已超额';
                 }
 
-                // 修复：仅4个时段列，与thead列数匹配（7列）
                 tr.innerHTML = `
                     <td class="py-4 px-6 font-medium">
                         <button class="emp-btn text-space-blue hover:text-nebula transition-colors flex items-center" 
@@ -532,7 +503,6 @@ const employees = [
                 tableBody.appendChild(tr);
             });
 
-            // 绑定弹窗触发事件
             document.querySelectorAll('.emp-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     const name = btn.getAttribute('data-name');
@@ -543,12 +513,9 @@ const employees = [
             });
         }
 
-        // 5. 弹窗逻辑（修复时段文字，匹配4个时段数据）
         function showModal(name, hours, total) {
-            // 清空之前的抖动类，避免重复触发
             modalImg.classList.remove('shake-active');
             
-            // 弹窗基础信息
             modalName.textContent = name;
             detail1.textContent = hours[0];
             detail2.textContent = hours[1];
@@ -556,72 +523,62 @@ const employees = [
             detail4.textContent = hours[3];
             modalTotal.textContent = `总工时：${total}小时`;
 
-            // 按工时状态分支处理
             if (total < 176) {
-                // 工时不足：红色调样式 + 警示图
                 modalTotal.className = 'px-4 py-2 rounded-full text-sm font-space bg-red-900/30 text-red-400';
                 modalStatus.className = 'px-4 py-2 rounded-full text-sm font-medium bg-red-900/30 text-red-400';
                 modalStatus.textContent = '工时不足';
-                modalComment.textContent = `${name}，你的9月工时未达标（差额${176 - total}小时）！需在10月补班完成，否则将被分配至小行星采矿任务。`;
+                modalComment.textContent = `${name}，你的10月工时未达标（差额${176 - total}小时）！需在11月补班完成，否则将被分配至小行星采矿任务。`;
                 
-                // 加载本地图（优先级：本地 → 备用）
                 modalImg.src = "Rick-Morty-2.jpg";
                 modalImg.alt = `${name}（工时不足）- 星际警示图`;
                 
-                // 图片加载成功后触发抖动
                 modalImg.onload = () => setTimeout(() => modalImg.classList.add('shake-active'), 100);
-                // 加载失败降级
                 modalImg.onerror = () => {
-                    modalImg.src = "https://picsum.photos/id/1005/800/500"; // 红色调备用图
+                    modalImg.src = "https://picsum.photos/id/1005/800/500";
                     modalImg.alt = `${name}（工时不足）- 备用警示图`;
                     setTimeout(() => modalImg.classList.add('shake-active'), 100);
                 };
 
             } else if (total === 176) {
-                // 工时正常：紫色调样式 + 标准图
                 modalTotal.className = 'px-4 py-2 rounded-full text-sm font-space bg-purple-900/20 text-nebula';
                 modalStatus.className = 'px-4 py-2 rounded-full text-sm font-medium bg-purple-900/20 text-nebula';
                 modalStatus.textContent = '工时正常';
-                modalComment.textContent = `${name}，你的9月工时恰好达标！符合星际工作标准，可正常参与10月星际探索任务。`;
+                modalComment.textContent = `${name}，你的10月工时恰好达标！符合星际工作标准，可正常参与11月星际探索任务。`;
                 
                 modalImg.src = "rick-and-morty3.jpg";
                 modalImg.alt = `${name}（工时正常）- 星际标准图`;
                 modalImg.onload = () => setTimeout(() => modalImg.classList.add('shake-active'), 100);
                 modalImg.onerror = () => {
-                    modalImg.src = "https://picsum.photos/id/1035/800/500"; // 紫色调备用图
+                    modalImg.src = "https://picsum.photos/id/1035/800/500";
                     modalImg.alt = `${name}（工时正常）- 备用标准图`;
                     setTimeout(() => modalImg.classList.add('shake-active'), 100);
                 };
 
             } else {
-                // 工时超额：黄色调样式 + 庆祝图
                 modalTotal.className = 'px-4 py-2 rounded-full text-sm font-space bg-yellow-900/20 text-star-yellow';
                 modalStatus.className = 'px-4 py-2 rounded-full text-sm font-medium bg-yellow-900/20 text-star-yellow';
                 modalStatus.textContent = '已超额';
-                modalComment.textContent = `${name}，你太棒了！9月工时超额${total - 176}小时，获得"星际劳模"称号，可兑换3天调休或星际积分奖励！`;
+                modalComment.textContent = `${name}，你太棒了！10月工时超额${total - 176}小时，获得"星际劳模"称号，可兑换3天调休或星际积分奖励！`;
                 
                 modalImg.src = "Rick-Morty-1.jpg";
                 modalImg.alt = `${name}（工时超额）- 星际庆祝图`;
                 modalImg.onload = () => setTimeout(() => modalImg.classList.add('shake-active'), 100);
                 modalImg.onerror = () => {
-                    modalImg.src = "https://picsum.photos/id/1062/800/500"; // 黄色调备用图
+                    modalImg.src = "https://picsum.photos/id/1062/800/500";
                     modalImg.alt = `${name}（工时超额）- 备用庆祝图`;
                     setTimeout(() => modalImg.classList.add('shake-active'), 100);
                 };
             }
 
-            // 显示弹窗
             modal.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
         }
 
-        // 6. 关闭弹窗
         function closeModalFunc() {
             modal.classList.add('hidden');
             document.body.style.overflow = '';
         }
 
-        // 7. 搜索功能（支持姓名、工时、总工时匹配）
         function handleSearch(e) {
             const val = e.target.value.toLowerCase().trim();
             const filtered = employees.filter(emp => 
@@ -632,7 +589,6 @@ const employees = [
             renderTable(filtered);
         }
 
-        // 8. 初始化工时图表（修正数据逻辑）
         function initChart() {
             const under = employees.filter(emp => emp.total < 176).length;
             const normal = employees.filter(emp => emp.total === 176).length;
@@ -683,7 +639,6 @@ const employees = [
             });
         }
 
-        // 9. 滚动动画（优化触发时机）
         function handleScroll() {
             document.querySelectorAll('.animate-on-scroll').forEach(el => {
                 const rect = el.getBoundingClientRect();
@@ -694,14 +649,12 @@ const employees = [
             });
         }
 
-        // 10. 事件绑定
         closeModal.addEventListener('click', closeModalFunc);
         modal.addEventListener('click', (e) => e.target === modal && closeModalFunc());
         resetBtn.addEventListener('click', () => {
             globalSearch.value = '';
             mobileSearch.value = '';
             renderTable();
-            // 重置滚动动画
             document.querySelectorAll('.animate-on-scroll').forEach(el => el.classList.remove('visible'));
             setTimeout(handleScroll, 100);
         });
@@ -709,7 +662,6 @@ const employees = [
         mobileSearch.addEventListener('input', handleSearch);
         window.addEventListener('scroll', handleScroll);
 
-        // 11. 页面初始化
         document.addEventListener('DOMContentLoaded', () => {
             initStats();
             renderTable();
@@ -719,9 +671,3 @@ const employees = [
     </script>
 </body>
 </html>
-
-
-
-
-
-
