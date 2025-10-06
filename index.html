@@ -203,7 +203,7 @@
                     10月星际员工工时系统
                 </h2>
                 <p class="text-orbit-light text-lg mb-6">
-                    欢迎来到10月星际工时控制台！本月标准工时176小时，请确保你的任务时长达标，避免被分配到小行星采矿任务。
+                    欢迎来到10月星际工时控制台！因10月1-6日为公共假期，本月标准工时调整为144小时，请确保任务时长达标，避免被分配到小行星采矿任务。
                 </p>
                 
                 <div class="relative md:hidden mb-6">
@@ -263,7 +263,7 @@
                         <p class="text-orbit-light mt-1">点击员工代号查看星际评价报告</p>
                     </div>
                     <div class="mt-4 md:mt-0 text-sm text-orbit-light">
-                        <span class="flex items-center"><i class="fa fa-info-circle text-star-yellow mr-1"></i> 本月标准工时：176小时</span>
+                        <span class="flex items-center"><i class="fa fa-info-circle text-star-yellow mr-1"></i> 本月标准工时：144小时（10.1-6为公共假期）</span>
                     </div>
                 </div>
                 
@@ -302,7 +302,7 @@
                 星际工时日志系统 &copy; 2025 | 星际联盟认证编号: ST-2025-10
             </p>
             <p class="text-space-blue/70 text-xs mt-2">
-                系统提示：10月26日为星际任务结算日，请各员工确保工时数据准确
+                系统提示：10月26日为星际任务结算日，10.1-6假期已抵扣工时，标准工时以144小时为准
             </p>
         </div>
     </footer>
@@ -439,14 +439,18 @@ const employees = [
         const 达标员工数El = document.getElementById('达标员工数');
         const 异常员工数El = document.getElementById('异常员工数');
         const chartEl = document.getElementById('workHoursChart');
+        // 定义10月标准工时（10.1-6为假期，调整为144小时）
+        const STANDARD_HOURS = 144;
 
+        // 初始化统计数据（按新标准工时计算达标/异常）
         function initStats() {
             totalEmployeesEl.textContent = employees.length;
-            const 达标数 = employees.filter(emp => emp.total >= 176).length;
+            const 达标数 = employees.filter(emp => emp.total >= STANDARD_HOURS).length;
             达标员工数El.textContent = 达标数;
             异常员工数El.textContent = employees.length - 达标数;
         }
 
+        // 渲染表格（按新标准判断状态）
         function renderTable(empList = employees) {
             tableBody.innerHTML = '';
             if (empList.length === 0) {
@@ -468,12 +472,13 @@ const employees = [
                 tr.className = idx % 2 === 0 ? 'bg-void-black/30' : 'bg-galaxy-dark/50';
                 tr.classList.add('hover:bg-space-blue/10', 'transition-colors');
 
+                // 按新标准判断状态（<144：不足；=144：正常；>144：超额）
                 let statusCls = '';
                 let statusText = '';
-                if (emp.total < 176) {
+                if (emp.total < STANDARD_HOURS) {
                     statusCls = 'text-red-400 bg-red-900/20';
                     statusText = '工时不足';
-                } else if (emp.total === 176) {
+                } else if (emp.total === STANDARD_HOURS) {
                     statusCls = 'text-nebula bg-purple-900/20';
                     statusText = '工时正常';
                 } else {
@@ -495,7 +500,7 @@ const employees = [
                     <td class="py-4 px-6 table-cell ${emp.hours[1] < 20 ? 'text-red-400' : emp.hours[1] > 40 ? 'text-star-yellow' : ''}">${emp.hours[1]}</td>
                     <td class="py-4 px-6 table-cell ${emp.hours[2] < 20 ? 'text-red-400' : emp.hours[2] > 40 ? 'text-star-yellow' : ''}">${emp.hours[2]}</td>
                     <td class="py-4 px-6 table-cell ${emp.hours[3] < 20 ? 'text-red-400' : emp.hours[3] > 40 ? 'text-star-yellow' : ''}">${emp.hours[3]}</td>
-                    <td class="py-4 px-6 table-cell ${emp.total < 176 ? 'text-red-400' : emp.total > 176 ? 'text-star-yellow' : 'text-nebula'} font-bold">${emp.total}</td>
+                    <td class="py-4 px-6 table-cell ${emp.total < STANDARD_HOURS ? 'text-red-400' : emp.total > STANDARD_HOURS ? 'text-star-yellow' : 'text-nebula'} font-bold">${emp.total}</td>
                     <td class="py-4 px-6">
                         <span class="px-3 py-1 rounded-full text-xs font-medium ${statusCls}">${statusText}</span>
                     </td>
@@ -503,6 +508,7 @@ const employees = [
                 tableBody.appendChild(tr);
             });
 
+            // 绑定弹窗事件
             document.querySelectorAll('.emp-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     const name = btn.getAttribute('data-name');
@@ -513,6 +519,7 @@ const employees = [
             });
         }
 
+        // 弹窗逻辑（按新标准生成评价）
         function showModal(name, hours, total) {
             modalImg.classList.remove('shake-active');
             
@@ -523,11 +530,13 @@ const employees = [
             detail4.textContent = hours[3];
             modalTotal.textContent = `总工时：${total}小时`;
 
-            if (total < 176) {
+            // 按新标准（144小时）分支处理
+            if (total < STANDARD_HOURS) {
+                const deficit = STANDARD_HOURS - total;
                 modalTotal.className = 'px-4 py-2 rounded-full text-sm font-space bg-red-900/30 text-red-400';
                 modalStatus.className = 'px-4 py-2 rounded-full text-sm font-medium bg-red-900/30 text-red-400';
                 modalStatus.textContent = '工时不足';
-                modalComment.textContent = `${name}，你的10月工时未达标（差额${176 - total}小时）！需在11月补班完成，否则将被分配至小行星采矿任务。`;
+                modalComment.textContent = `${name}，你的10月工时未达标（差额${deficit}小时）！因10.1-6为公共假期，本月标准工时已调整为144小时，请在11月补班完成差额，否则将被分配至小行星采矿任务。`;
                 
                 modalImg.src = "Rick-Morty-2.jpg";
                 modalImg.alt = `${name}（工时不足）- 星际警示图`;
@@ -539,11 +548,11 @@ const employees = [
                     setTimeout(() => modalImg.classList.add('shake-active'), 100);
                 };
 
-            } else if (total === 176) {
+            } else if (total === STANDARD_HOURS) {
                 modalTotal.className = 'px-4 py-2 rounded-full text-sm font-space bg-purple-900/20 text-nebula';
                 modalStatus.className = 'px-4 py-2 rounded-full text-sm font-medium bg-purple-900/20 text-nebula';
                 modalStatus.textContent = '工时正常';
-                modalComment.textContent = `${name}，你的10月工时恰好达标！符合星际工作标准，可正常参与11月星际探索任务。`;
+                modalComment.textContent = `${name}，你的10月工时恰好达标！因10.1-6为公共假期，本月标准工时调整为144小时，你符合星际工作标准，可正常参与11月星际探索任务。`;
                 
                 modalImg.src = "rick-and-morty3.jpg";
                 modalImg.alt = `${name}（工时正常）- 星际标准图`;
@@ -555,10 +564,11 @@ const employees = [
                 };
 
             } else {
+                const surplus = total - STANDARD_HOURS;
                 modalTotal.className = 'px-4 py-2 rounded-full text-sm font-space bg-yellow-900/20 text-star-yellow';
                 modalStatus.className = 'px-4 py-2 rounded-full text-sm font-medium bg-yellow-900/20 text-star-yellow';
                 modalStatus.textContent = '已超额';
-                modalComment.textContent = `${name}，你太棒了！10月工时超额${total - 176}小时，获得"星际劳模"称号，可兑换3天调休或星际积分奖励！`;
+                modalComment.textContent = `${name}，你太棒了！10月工时超额${surplus}小时（因10.1-6为公共假期，本月标准工时144小时），获得"星际劳模"称号，可兑换3天调休或星际积分奖励！`;
                 
                 modalImg.src = "Rick-Morty-1.jpg";
                 modalImg.alt = `${name}（工时超额）- 星际庆祝图`;
@@ -574,11 +584,13 @@ const employees = [
             document.body.style.overflow = 'hidden';
         }
 
+        // 关闭弹窗
         function closeModalFunc() {
             modal.classList.add('hidden');
             document.body.style.overflow = '';
         }
 
+        // 搜索功能
         function handleSearch(e) {
             const val = e.target.value.toLowerCase().trim();
             const filtered = employees.filter(emp => 
@@ -589,10 +601,11 @@ const employees = [
             renderTable(filtered);
         }
 
+        // 初始化图表（按新标准统计）
         function initChart() {
-            const under = employees.filter(emp => emp.total < 176).length;
-            const normal = employees.filter(emp => emp.total === 176).length;
-            const over = employees.filter(emp => emp.total > 176).length;
+            const under = employees.filter(emp => emp.total < STANDARD_HOURS).length;
+            const normal = employees.filter(emp => emp.total === STANDARD_HOURS).length;
+            const over = employees.filter(emp => emp.total > STANDARD_HOURS).length;
 
             new Chart(chartEl, {
                 type: 'doughnut',
@@ -631,7 +644,11 @@ const employees = [
                             bodyColor: 'white',
                             borderColor: '#1E40AF',
                             borderWidth: 1,
-                            padding: 12
+                            padding: 12,
+                            //  tooltip补充标准工时说明
+                            callbacks: {
+                                afterLabel: () => `10月标准工时：${STANDARD_HOURS}小时（含10.1-6假期）`
+                            }
                         }
                     },
                     animation: { animateScale: true, animateRotate: true, duration: 2000 }
@@ -639,6 +656,7 @@ const employees = [
             });
         }
 
+        // 滚动动画
         function handleScroll() {
             document.querySelectorAll('.animate-on-scroll').forEach(el => {
                 const rect = el.getBoundingClientRect();
@@ -649,6 +667,7 @@ const employees = [
             });
         }
 
+        // 事件绑定
         closeModal.addEventListener('click', closeModalFunc);
         modal.addEventListener('click', (e) => e.target === modal && closeModalFunc());
         resetBtn.addEventListener('click', () => {
@@ -662,6 +681,7 @@ const employees = [
         mobileSearch.addEventListener('input', handleSearch);
         window.addEventListener('scroll', handleScroll);
 
+        // 页面初始化
         document.addEventListener('DOMContentLoaded', () => {
             initStats();
             renderTable();
