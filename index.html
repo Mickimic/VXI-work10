@@ -360,13 +360,13 @@
 
     <script>
 const employees = [
-    { name: "罗子皓", hours: [90, 40, 40, 40], total: 208 },
-    { name: "刘心奕", hours: [88, 36, 24, 40], total: 188 },
+    { name: "罗子皓", hours: [88, 40, 40, 40], total: 208 },
+    { name: "刘心奕", hours: [88, 36, 22, 40], total: 186 },
     { name: "余颖", hours: [32, 40, 40, 40], total: 152 },
     { name: "裴文华", hours: [56, 40, 40, 40], total: 176 },
     { name: "苏捷", hours: [64, 40, 40, 40], total: 184 },
     { name: "祝皓雯", hours: [32, 40, 40, 40], total: 152 },
-    { name: "陈锶蕙", hours: [100, 40, 40, 40], total: 220 },
+    { name: "陈锶蕙", hours: [100, 50, 40, 40], total: 230 },
     { name: "易杨平", hours: [115, 33, 32, 40], total: 220 },
     { name: "黎佳丽", hours: [40, 40, 40, 40], total: 160 },
     { name: "李金璇", hours: [100, 40, 40, 40], total: 220 },
@@ -385,14 +385,14 @@ const employees = [
     { name: "初华旭", hours: [32, 40, 40, 40], total: 152 },
     { name: "陈洁", hours: [32, 40, 40, 40], total: 152 },
     { name: "李洁怡", hours: [48, 40, 40, 40], total: 168 },
-    { name: "李凯盈", hours: [32, 16, 40, 40], total: 128 },
-    { name: "高刘香", hours: [32, 40, 40, 40], total: 152 },
-    { name: "周子涵", hours: [56, 40, 40, 40], total: 176 },
+    { name: "李凯盈", hours: [32, 0, 0, 32], total: 64 },
+    { name: "高刘香", hours: [32, 32, 40, 40], total: 144 },
+    { name: "周子涵", hours: [65, 40, 40, 40], total: 185 },
     { name: "康篡娇", hours: [85, 35, 40, 40], total: 200 },
     { name: "刘涛", hours: [85, 35, 40, 40], total: 200 },
     { name: "何丽雅", hours: [32, 40, 40, 40], total: 152 },
     { name: "尚兴越", hours: [80, 40, 40, 40], total: 200 },
-    { name: "苏琪", hours: [32, 32, 40, 40], total: 144 },
+    { name: "苏琪", hours: [36, 32, 40, 40], total: 148 },
     { name: "缪月", hours: [32, 40, 40, 40], total: 152 },
     { name: "罗佳兰", hours: [90, 40, 40, 40], total: 210 },
     { name: "章云燕", hours: [100, 40, 40, 40], total: 220 },
@@ -401,23 +401,27 @@ const employees = [
     { name: "高欣悦", hours: [80, 0, 0, 0], total: 80 },
     { name: "龙建宇", hours: [32, 40, 40, 40], total: 152 },
     { name: "杨巧巧", hours: [32, 40, 40, 40], total: 152 },
-    { name: "严芷欣", hours: [32, 40, 40, 40], total: 152 },
+    { name: "严芷欣", hours: [32, 32, 40, 40], total: 144 },
     { name: "付锦鹿", hours: [68, 37, 39, 40], total: 184 },
     { name: "颜瑜", hours: [84, 40, 40, 40], total: 204 },
     { name: "井嫚君", hours: [32, 40, 40, 40], total: 152 },
     { name: "刘暄超", hours: [48, 40, 40, 40], total: 168 },
     { name: "周洁冉", hours: [48, 40, 40, 40], total: 168 },
-    { name: "余捷楠", hours: [0, 16, 40, 40], total: 96 },
+    { name: "余捷楠", hours: [32, 40, 40, 40], total: 152 },
     { name: "周双", hours: [56, 40, 40, 40], total: 176 },
-    { name: "鲁杨", hours: [0, 16, 40, 40], total: 96 },
-    { name: "伍秋杏", hours: [0, 16, 40, 40], total: 96 },
-    { name: "王璐瑶", hours: [0, 16, 40, 40], total: 96 },
-    { name: "王君怡", hours: [0, 16, 40, 40], total: 96 },
-    { name: "袁欢", hours: [0, 0, 40, 40], total: 80 },
-    { name: "胡丁元", hours: [0, 16, 40, 40], total: 96 },
-    { name: "王梓舒", hours: [0, 16, 40, 40], total: 96 },
-    { name: "黄锡杰", hours: [0, 16, 40, 40], total: 96 },
-    { name: "邹晓彤", hours: [0, 16, 40, 40], total: 96 }
+    { name: "鲁杨", hours: [32, 40, 40, 40], total: 152 },
+    { name: "伍秋杏", hours: [32, 40, 40, 40], total: 152 },
+    { name: "王璐瑶", hours: [32, 40, 40, 40], total: 152 },
+    { name: "王君怡", hours: [32, 40, 40, 40], total: 152 },
+    { name: "袁欢", hours: [32, 24, 16, 40], total: 112 },
+    { name: "胡丁元", hours: [32, 40, 40, 40], total: 152 },
+    { name: "王梓舒", hours: [32, 40, 40, 40], total: 152 },
+    { name: "黄锡杰", hours: [32, 40, 40, 40], total: 152 },
+    { name: "邹晓彤", hours: [32, 40, 40, 40], total: 152 },
+    { name: "陈婉仪", hours: [0, 0, 40, 40], total: 80 },
+    { name: "任晓瑞", hours: [0, 0, 40, 40], total: 80 },
+    { name: "林晓泽", hours: [0, 0, 40, 40], total: 80 },
+    { name: "张玉婷", hours: [0, 0, 40, 40], total: 80 }
 ];
 
         const tableBody = document.getElementById('employeesTableBody');
@@ -691,6 +695,7 @@ const employees = [
     </script>
 </body>
 </html>
+
 
 
 
