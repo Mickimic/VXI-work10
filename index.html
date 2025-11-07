@@ -203,7 +203,7 @@
                     11月星际员工工时系统
                 </h2>
                 <p class="text-orbit-light text-lg mb-6">
-                    欢迎来到11月星际工时控制台！本月为正常工作日，标准工时为176小时，请确保任务时长达标，避免被分配到小行星采矿任务。
+                    欢迎来到11月星际工时控制台！本月为正常工作日，标准工时为160小时，请确保任务时长达标，避免被分配到小行星采矿任务。
                 </p>
                 
                 <div class="relative md:hidden mb-6">
@@ -263,7 +263,7 @@
                         <p class="text-orbit-light mt-1">点击员工代号查看星际评价报告</p>
                     </div>
                     <div class="mt-4 md:mt-0 text-sm text-orbit-light">
-                        <span class="flex items-center"><i class="fa fa-info-circle text-star-yellow mr-1"></i> 本月标准工时：176小时</span>
+                        <span class="flex items-center"><i class="fa fa-info-circle text-star-yellow mr-1"></i> 本月标准工时：160小时</span>
                     </div>
                 </div>
                 
@@ -302,7 +302,7 @@
                 星际工时日志系统 &copy; 2025 | 星际联盟认证编号: ST-2025-11
             </p>
             <p class="text-space-blue/70 text-xs mt-2">
-                系统提示：11月30日为星际任务结算日，本月为标准工作日，标准工时为176小时
+                系统提示：11月30日为星际任务结算日，本月为标准工作日，标准工时为160小时
             </p>
         </div>
     </footer>
@@ -442,10 +442,10 @@
         const 达标员工数El = document.getElementById('达标员工数');
         const 异常员工数El = document.getElementById('异常员工数');
         const chartEl = document.getElementById('workHoursChart');
-        // 11月标准工时（正常工作日，176小时）
-        const STANDARD_HOURS = 176;
+        // 11月标准工时（正常工作日，160小时）
+        const STANDARD_HOURS = 160;
 
-        // 初始化统计数据（按176小时标准计算）
+        // 初始化统计数据（按160小时标准计算）
         function initStats() {
             totalEmployeesEl.textContent = employees.length;
             const 达标数 = employees.filter(emp => emp.total >= STANDARD_HOURS).length;
@@ -453,7 +453,7 @@
             异常员工数El.textContent = employees.length - 达标数;
         }
 
-        // 渲染表格（按176小时标准判断状态）
+        // 渲染表格（按160小时标准判断状态）
         function renderTable(empList = employees) {
             tableBody.innerHTML = '';
             if (empList.length === 0) {
@@ -475,7 +475,7 @@
                 tr.className = idx % 2 === 0 ? 'bg-void-black/30' : 'bg-galaxy-dark/50';
                 tr.classList.add('hover:bg-space-blue/10', 'transition-colors');
 
-                // 按176小时标准判断状态
+                // 按160小时标准判断状态
                 let statusCls = '';
                 let statusText = '';
                 if (emp.total < STANDARD_HOURS) {
@@ -522,7 +522,7 @@
             });
         }
 
-        // 弹窗逻辑（按176小时标准生成评价）
+        // 弹窗逻辑（按160小时标准生成评价）
         function showModal(name, hours, total) {
             modalImg.classList.remove('shake-active');
             
@@ -533,13 +533,13 @@
             detail4.textContent = hours[3];
             modalTotal.textContent = `总工时：${total}小时`;
 
-            // 按176小时标准分支处理
+            // 按160小时标准分支处理
             if (total < STANDARD_HOURS) {
                 const deficit = STANDARD_HOURS - total;
                 modalTotal.className = 'px-4 py-2 rounded-full text-sm font-space bg-red-900/30 text-red-400';
                 modalStatus.className = 'px-4 py-2 rounded-full text-sm font-medium bg-red-900/30 text-red-400';
                 modalStatus.textContent = '工时不足';
-                modalComment.textContent = `${name}，你的11月工时未达标（差额${deficit}小时）！本月为标准工作日，标准工时为176小时，请在12月补班完成差额，否则将被分配至小行星采矿任务。`;
+                modalComment.textContent = `${name}，你的11月工时未达标（差额${deficit}小时）！本月为标准工作日，标准工时为160小时，请在12月补班完成差额，否则将被分配至小行星采矿任务。`;
                 
                 modalImg.src = "Rick-Morty-2.jpg";
                 modalImg.alt = `${name}（工时不足）- 星际警示图`;
@@ -555,7 +555,7 @@
                 modalTotal.className = 'px-4 py-2 rounded-full text-sm font-space bg-purple-900/20 text-nebula';
                 modalStatus.className = 'px-4 py-2 rounded-full text-sm font-medium bg-purple-900/20 text-nebula';
                 modalStatus.textContent = '工时正常';
-                modalComment.textContent = `${name}，你的11月工时恰好达标！本月为标准工作日，标准工时为176小时，你符合星际工作标准，可正常参与12月星际探索任务。`;
+                modalComment.textContent = `${name}，你的11月工时恰好达标！本月为标准工作日，标准工时为160小时，你符合星际工作标准，可正常参与12月星际探索任务。`;
                 
                 modalImg.src = "rick-and-morty3.jpg";
                 modalImg.alt = `${name}（工时正常）- 星际标准图`;
@@ -571,7 +571,7 @@
                 modalTotal.className = 'px-4 py-2 rounded-full text-sm font-space bg-yellow-900/20 text-star-yellow';
                 modalStatus.className = 'px-4 py-2 rounded-full text-sm font-medium bg-yellow-900/20 text-star-yellow';
                 modalStatus.textContent = '已超额';
-                modalComment.textContent = `${name}，你太棒了！11月工时超额${surplus}小时（本月标准工时176小时），获得"星际劳模"称号，可兑换3天调休或星际积分奖励！`;
+                modalComment.textContent = `${name}，你太棒了！11月工时超额${surplus}小时（本月标准工时160小时），获得"星际劳模"称号，可兑换3天调休或星际积分奖励！`;
                 
                 modalImg.src = "Rick-Morty-1.jpg";
                 modalImg.alt = `${name}（工时超额）- 星际庆祝图`;
@@ -604,7 +604,7 @@
             renderTable(filtered);
         }
 
-        // 初始化图表（按176小时标准统计）
+        // 初始化图表（按160小时标准统计）
         function initChart() {
             const under = employees.filter(emp => emp.total < STANDARD_HOURS).length;
             const normal = employees.filter(emp => emp.total === STANDARD_HOURS).length;
@@ -694,3 +694,4 @@
     </script>
 </body>
 </html>
+
