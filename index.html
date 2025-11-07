@@ -203,7 +203,7 @@
                     11月星际员工工时系统
                 </h2>
                 <p class="text-orbit-light text-lg mb-6">
-                    欢迎来到11月星际工时控制台！本月无特殊假期，标准工时为160小时，请确保任务时长达标，避免被分配到小行星采矿任务。
+                    欢迎来到11月星际工时控制台！本月为正常工作日，标准工时为176小时，请确保任务时长达标，避免被分配到小行星采矿任务。
                 </p>
                 
                 <div class="relative md:hidden mb-6">
@@ -263,7 +263,7 @@
                         <p class="text-orbit-light mt-1">点击员工代号查看星际评价报告</p>
                     </div>
                     <div class="mt-4 md:mt-0 text-sm text-orbit-light">
-                        <span class="flex items-center"><i class="fa fa-info-circle text-star-yellow mr-1"></i> 本月标准工时：160小时（无特殊假期）</span>
+                        <span class="flex items-center"><i class="fa fa-info-circle text-star-yellow mr-1"></i> 本月标准工时：176小时</span>
                     </div>
                 </div>
                 
@@ -272,10 +272,10 @@
                         <thead>
                             <tr class="bg-void-black/60">
                                 <th class="py-4 px-6 text-left text-star-yellow font-space">员工代号</th>
-                                <th class="py-4 px-6 text-left text-star-yellow font-space">11/1-9</th>
-                                <th class="py-4 px-6 text-left text-star-yellow font-space">11/10-16</th>
-                                <th class="py-4 px-6 text-left text-star-yellow font-space">11/17-23</th>
-                                <th class="py-4 px-6 text-left text-star-yellow font-space">11/24-30</th>
+                                <th class="py-4 px-6 text-left text-star-yellow font-space">11/1-11/9</th>
+                                <th class="py-4 px-6 text-left text-star-yellow font-space">11/10-11/16</th>
+                                <th class="py-4 px-6 text-left text-star-yellow font-space">11/17-11/23</th>
+                                <th class="py-4 px-6 text-left text-star-yellow font-space">11/24-11/30</th>
                                 <th class="py-4 px-6 text-left text-star-yellow font-space">总工时</th>
                                 <th class="py-4 px-6 text-left text-star-yellow font-space">星际状态</th>
                             </tr>
@@ -283,4 +283,414 @@
                         <tbody id="employeesTableBody">
                             <tr>
                                 <td colspan="7" class="py-8 text-center text-orbit-light">
-                                    <div
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-16 h-16 border-4 border-dashed border-space-blue/30 rounded-full animate-spin-planet mb-4"></div>
+                                        加载星际员工数据中...
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-galaxy-dark border-t border-space-blue/30 py-6 relative z-10">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-orbit-light text-sm">
+                星际工时日志系统 &copy; 2025 | 星际联盟认证编号: ST-2025-11
+            </p>
+            <p class="text-space-blue/70 text-xs mt-2">
+                系统提示：11月30日为星际任务结算日，本月为标准工作日，标准工时为176小时
+            </p>
+        </div>
+    </footer>
+
+    <div id="employeeModal" class="fixed inset-0 z-50 hidden modal-backdrop">
+        <div class="absolute inset-0 flex items-center justify-center p-4">
+            <div class="bg-void-black border-2 border-space-blue rounded-xl max-w-3xl w-full max-h-[90vh] overflow-hidden animate-glow-ship">
+                <div class="relative">
+                    <div class="h-64 md:h-80 bg-galaxy-dark">
+                        <img id="modalImg" src="" alt="员工详情图" class="w-full h-full object-cover">
+                    </div>
+                    
+                    <button id="closeModal" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-void-black/80 flex items-center justify-center text-white hover:text-space-blue transition-colors z-10">
+                        <i class="fa fa-times text-xl"></i>
+                    </button>
+                </div>
+                
+                <div class="p-6">
+                    <h3 id="modalName" class="text-2xl font-space text-space-blue text-shadow-space mb-4"></h3>
+                    <div class="flex items-center mb-6 flex-wrap gap-2">
+                        <span id="modalTotal" class="px-4 py-2 rounded-full text-sm font-space"></span>
+                        <span id="modalStatus" class="px-4 py-2 rounded-full text-sm font-medium"></span>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <h4 class="text-star-yellow font-space mb-2">11月工时明细</h4>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
+                            <div class="bg-galaxy-dark p-2 rounded-lg">
+                                <p class="text-xs text-orbit-light">11/1-9</p>
+                                <p id="detail1" class="text-lg font-bold"></p>
+                            </div>
+                            <div class="bg-galaxy-dark p-2 rounded-lg">
+                                <p class="text-xs text-orbit-light">11/10-16</p>
+                                <p id="detail2" class="text-lg font-bold"></p>
+                            </div>
+                            <div class="bg-galaxy-dark p-2 rounded-lg">
+                                <p class="text-xs text-orbit-light">11/17-23</p>
+                                <p id="detail3" class="text-lg font-bold"></p>
+                            </div>
+                            <div class="bg-galaxy-dark p-2 rounded-lg">
+                                <p class="text-xs text-orbit-light">11/24-30</p>
+                                <p id="detail4" class="text-lg font-bold"></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-star-yellow font-space mb-2">星际评价</h4>
+                        <p id="modalComment" class="text-orbit-light leading-relaxed"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const employees = [
+            { name: "罗子皓", hours: [50, 40, 40, 40], total: 170 },
+            { name: "刘心奕", hours: [40, 40, 40, 40], total: 160 },
+            { name: "余颖", hours: [40, 40, 40, 40], total: 160 },
+            { name: "裴文华", hours: [40, 40, 40, 40], total: 160 },
+            { name: "苏捷", hours: [50, 40, 40, 16], total: 146 },
+            { name: "祝皓雯", hours: [40, 40, 40, 40], total: 160 },
+            { name: "陈锶蕙", hours: [40, 40, 40, 40], total: 160 },
+            { name: "易杨平", hours: [40, 40, 40, 40], total: 160 },
+            { name: "黎佳丽", hours: [40, 40, 40, 40], total: 160 },
+            { name: "曾子荣", hours: [40, 40, 40, 40], total: 160 },
+            { name: "钟栋竞", hours: [60, 40, 40, 40], total: 180 },
+            { name: "游丽萍", hours: [40, 40, 40, 40], total: 160 },
+            { name: "陈佳鑫", hours: [40, 40, 40, 40], total: 160 },
+            { name: "庞芝婷", hours: [40, 40, 40, 40], total: 160 },
+            { name: "谢璇", hours: [40, 40, 40, 40], total: 160 },
+            { name: "何江萍", hours: [60, 40, 40, 40], total: 180 },
+            { name: "郭天艳", hours: [40, 32, 40, 40], total: 152 },
+            { name: "田静", hours: [42, 40, 40, 40], total: 162 },
+            { name: "李琳", hours: [50, 40, 40, 40], total: 170 },
+            { name: "巫尚贤", hours: [40, 40, 40, 40], total: 160 },
+            { name: "苏诗画", hours: [40, 40, 40, 40], total: 160 },
+            { name: "初华旭", hours: [40, 40, 40, 40], total: 160 },
+            { name: "陈洁", hours: [40, 40, 40, 40], total: 160 },
+            { name: "李洁怡", hours: [38, 40, 40, 40], total: 158 },
+            { name: "李凯盈", hours: [40, 40, 40, 40], total: 160 },
+            { name: "高刘香", hours: [50, 40, 16, 40], total: 146 },
+            { name: "周子涵", hours: [40, 40, 40, 40], total: 160 },
+            { name: "康篡娇", hours: [60, 40, 40, 40], total: 180 },
+            { name: "刘涛", hours: [60, 40, 40, 40], total: 180 },
+            { name: "何丽雅", hours: [40, 40, 40, 40], total: 160 },
+            { name: "尚兴越", hours: [40, 40, 40, 40], total: 160 },
+            { name: "苏琪", hours: [40, 40, 40, 40], total: 160 },
+            { name: "缪月", hours: [40, 40, 40, 40], total: 160 },
+            { name: "罗佳兰", hours: [60, 40, 40, 40], total: 180 },
+            { name: "章云燕", hours: [60, 40, 40, 40], total: 180 },
+            { name: "简行峰", hours: [76, 40, 40, 24], total: 180 },
+            { name: "龙建宇", hours: [40, 40, 40, 40], total: 160 },
+            { name: "杨巧巧", hours: [40, 16, 40, 40], total: 136 },
+            { name: "严芷欣", hours: [40, 40, 40, 40], total: 160 },
+            { name: "付锦鹿", hours: [40, 40, 40, 40], total: 160 },
+            { name: "颜瑜", hours: [48, 40, 40, 40], total: 168 },
+            { name: "刘暄超", hours: [40, 40, 40, 40], total: 160 },
+            { name: "周洁冉", hours: [40, 40, 40, 40], total: 160 },
+            { name: "余捷楠", hours: [48, 32, 40, 40], total: 160 },
+            { name: "周双", hours: [8, 40, 40, 40], total: 128 },
+            { name: "鲁杨", hours: [40, 40, 40, 40], total: 160 },
+            { name: "伍秋杏", hours: [40, 40, 40, 40], total: 160 },
+            { name: "王璐瑶", hours: [40, 40, 40, 40], total: 160 },
+            { name: "王君怡", hours: [40, 40, 40, 40], total: 160 },
+            { name: "袁欢", hours: [56, 40, 40, 24], total: 160 },
+            { name: "胡丁元", hours: [40, 40, 40, 40], total: 160 },
+            { name: "王梓舒", hours: [40, 40, 40, 40], total: 160 },
+            { name: "黄锡杰", hours: [40, 40, 40, 40], total: 160 },
+            { name: "邹晓彤", hours: [40, 40, 40, 40], total: 160 },
+            { name: "陈婉仪", hours: [40, 40, 40, 40], total: 160 },
+            { name: "任晓瑞", hours: [32, 40, 40, 40], total: 152 },
+            { name: "林晓泽", hours: [40, 40, 40, 40], total: 160 },
+            { name: "张玉婷", hours: [40, 40, 40, 40], total: 160 },
+            { name: "赵悦", hours: [40, 40, 40, 40], total: 160 },
+            { name: "单玺宁", hours: [40, 40, 40, 40], total: 160 },
+            { name: "刘博元", hours: [40, 40, 40, 40], total: 160 }
+        ];
+
+        const tableBody = document.getElementById('employeesTableBody');
+        const modal = document.getElementById('employeeModal');
+        const modalImg = document.getElementById('modalImg');
+        const modalName = document.getElementById('modalName');
+        const modalTotal = document.getElementById('modalTotal');
+        const modalStatus = document.getElementById('modalStatus');
+        const modalComment = document.getElementById('modalComment');
+        const detail1 = document.getElementById('detail1');
+        const detail2 = document.getElementById('detail2');
+        const detail3 = document.getElementById('detail3');
+        const detail4 = document.getElementById('detail4');
+        const closeModal = document.getElementById('closeModal');
+        const resetBtn = document.getElementById('resetBtn');
+        const globalSearch = document.getElementById('globalSearch');
+        const mobileSearch = document.getElementById('mobileSearch');
+        const totalEmployeesEl = document.getElementById('totalEmployees');
+        const 达标员工数El = document.getElementById('达标员工数');
+        const 异常员工数El = document.getElementById('异常员工数');
+        const chartEl = document.getElementById('workHoursChart');
+        // 11月标准工时（正常工作日，176小时）
+        const STANDARD_HOURS = 176;
+
+        // 初始化统计数据（按176小时标准计算）
+        function initStats() {
+            totalEmployeesEl.textContent = employees.length;
+            const 达标数 = employees.filter(emp => emp.total >= STANDARD_HOURS).length;
+            达标员工数El.textContent = 达标数;
+            异常员工数El.textContent = employees.length - 达标数;
+        }
+
+        // 渲染表格（按176小时标准判断状态）
+        function renderTable(empList = employees) {
+            tableBody.innerHTML = '';
+            if (empList.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="py-8 text-center text-orbit-light">
+                            <div class="flex flex-col items-center">
+                                <i class="fa fa-search-minus text-4xl text-star-yellow mb-4"></i>
+                                未找到匹配的星际员工
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            empList.forEach((emp, idx) => {
+                const tr = document.createElement('tr');
+                tr.className = idx % 2 === 0 ? 'bg-void-black/30' : 'bg-galaxy-dark/50';
+                tr.classList.add('hover:bg-space-blue/10', 'transition-colors');
+
+                // 按176小时标准判断状态
+                let statusCls = '';
+                let statusText = '';
+                if (emp.total < STANDARD_HOURS) {
+                    statusCls = 'text-red-400 bg-red-900/20';
+                    statusText = '工时不足';
+                } else if (emp.total === STANDARD_HOURS) {
+                    statusCls = 'text-nebula bg-purple-900/20';
+                    statusText = '工时正常';
+                } else {
+                    statusCls = 'text-star-yellow bg-yellow-900/20';
+                    statusText = '已超额';
+                }
+
+                tr.innerHTML = `
+                    <td class="py-4 px-6 font-medium">
+                        <button class="emp-btn text-space-blue hover:text-nebula transition-colors flex items-center" 
+                                data-name="${emp.name}" 
+                                data-hours="${JSON.stringify(emp.hours)}" 
+                                data-total="${emp.total}">
+                            ${emp.name}
+                            <i class="fa fa-arrow-right ml-2 text-xs"></i>
+                        </button>
+                    </td>
+                    <td class="py-4 px-6 table-cell ${emp.hours[0] < 20 ? 'text-red-400' : emp.hours[0] > 40 ? 'text-star-yellow' : ''}">${emp.hours[0]}</td>
+                    <td class="py-4 px-6 table-cell ${emp.hours[1] < 20 ? 'text-red-400' : emp.hours[1] > 40 ? 'text-star-yellow' : ''}">${emp.hours[1]}</td>
+                    <td class="py-4 px-6 table-cell ${emp.hours[2] < 20 ? 'text-red-400' : emp.hours[2] > 40 ? 'text-star-yellow' : ''}">${emp.hours[2]}</td>
+                    <td class="py-4 px-6 table-cell ${emp.hours[3] < 20 ? 'text-red-400' : emp.hours[3] > 40 ? 'text-star-yellow' : ''}">${emp.hours[3]}</td>
+                    <td class="py-4 px-6 table-cell ${emp.total < STANDARD_HOURS ? 'text-red-400' : emp.total > STANDARD_HOURS ? 'text-star-yellow' : 'text-nebula'} font-bold">${emp.total}</td>
+                    <td class="py-4 px-6">
+                        <span class="px-3 py-1 rounded-full text-xs font-medium ${statusCls}">${statusText}</span>
+                    </td>
+                `;
+                tableBody.appendChild(tr);
+            });
+
+            // 绑定弹窗事件
+            document.querySelectorAll('.emp-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const name = btn.getAttribute('data-name');
+                    const hours = JSON.parse(btn.getAttribute('data-hours'));
+                    const total = parseInt(btn.getAttribute('data-total'));
+                    showModal(name, hours, total);
+                });
+            });
+        }
+
+        // 弹窗逻辑（按176小时标准生成评价）
+        function showModal(name, hours, total) {
+            modalImg.classList.remove('shake-active');
+            
+            modalName.textContent = name;
+            detail1.textContent = hours[0];
+            detail2.textContent = hours[1];
+            detail3.textContent = hours[2];
+            detail4.textContent = hours[3];
+            modalTotal.textContent = `总工时：${total}小时`;
+
+            // 按176小时标准分支处理
+            if (total < STANDARD_HOURS) {
+                const deficit = STANDARD_HOURS - total;
+                modalTotal.className = 'px-4 py-2 rounded-full text-sm font-space bg-red-900/30 text-red-400';
+                modalStatus.className = 'px-4 py-2 rounded-full text-sm font-medium bg-red-900/30 text-red-400';
+                modalStatus.textContent = '工时不足';
+                modalComment.textContent = `${name}，你的11月工时未达标（差额${deficit}小时）！本月为标准工作日，标准工时为176小时，请在12月补班完成差额，否则将被分配至小行星采矿任务。`;
+                
+                modalImg.src = "Rick-Morty-2.jpg";
+                modalImg.alt = `${name}（工时不足）- 星际警示图`;
+                
+                modalImg.onload = () => setTimeout(() => modalImg.classList.add('shake-active'), 100);
+                modalImg.onerror = () => {
+                    modalImg.src = "https://picsum.photos/id/1005/800/500";
+                    modalImg.alt = `${name}（工时不足）- 备用警示图`;
+                    setTimeout(() => modalImg.classList.add('shake-active'), 100);
+                };
+
+            } else if (total === STANDARD_HOURS) {
+                modalTotal.className = 'px-4 py-2 rounded-full text-sm font-space bg-purple-900/20 text-nebula';
+                modalStatus.className = 'px-4 py-2 rounded-full text-sm font-medium bg-purple-900/20 text-nebula';
+                modalStatus.textContent = '工时正常';
+                modalComment.textContent = `${name}，你的11月工时恰好达标！本月为标准工作日，标准工时为176小时，你符合星际工作标准，可正常参与12月星际探索任务。`;
+                
+                modalImg.src = "rick-and-morty3.jpg";
+                modalImg.alt = `${name}（工时正常）- 星际标准图`;
+                modalImg.onload = () => setTimeout(() => modalImg.classList.add('shake-active'), 100);
+                modalImg.onerror = () => {
+                    modalImg.src = "https://picsum.photos/id/1035/800/500";
+                    modalImg.alt = `${name}（工时正常）- 备用标准图`;
+                    setTimeout(() => modalImg.classList.add('shake-active'), 100);
+                };
+
+            } else {
+                const surplus = total - STANDARD_HOURS;
+                modalTotal.className = 'px-4 py-2 rounded-full text-sm font-space bg-yellow-900/20 text-star-yellow';
+                modalStatus.className = 'px-4 py-2 rounded-full text-sm font-medium bg-yellow-900/20 text-star-yellow';
+                modalStatus.textContent = '已超额';
+                modalComment.textContent = `${name}，你太棒了！11月工时超额${surplus}小时（本月标准工时176小时），获得"星际劳模"称号，可兑换3天调休或星际积分奖励！`;
+                
+                modalImg.src = "Rick-Morty-1.jpg";
+                modalImg.alt = `${name}（工时超额）- 星际庆祝图`;
+                modalImg.onload = () => setTimeout(() => modalImg.classList.add('shake-active'), 100);
+                modalImg.onerror = () => {
+                    modalImg.src = "https://picsum.photos/id/1062/800/500";
+                    modalImg.alt = `${name}（工时超额）- 备用庆祝图`;
+                    setTimeout(() => modalImg.classList.add('shake-active'), 100);
+                };
+            }
+
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // 关闭弹窗
+        function closeModalFunc() {
+            modal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        // 搜索功能
+        function handleSearch(e) {
+            const val = e.target.value.toLowerCase().trim();
+            const filtered = employees.filter(emp => 
+                emp.name.toLowerCase().includes(val) || 
+                emp.total.toString().includes(val) || 
+                emp.hours.some(h => h.toString().includes(val))
+            );
+            renderTable(filtered);
+        }
+
+        // 初始化图表（按176小时标准统计）
+        function initChart() {
+            const under = employees.filter(emp => emp.total < STANDARD_HOURS).length;
+            const normal = employees.filter(emp => emp.total === STANDARD_HOURS).length;
+            const over = employees.filter(emp => emp.total > STANDARD_HOURS).length;
+
+            new Chart(chartEl, {
+                type: 'doughnut',
+                data: {
+                    labels: ['工时不足', '工时正常', '已超额'],
+                    datasets: [{
+                        data: [under, normal, over],
+                        backgroundColor: [
+                            'rgba(239, 68, 68, 0.7)',
+                            'rgba(124, 58, 237, 0.7)',
+                            'rgba(251, 191, 36, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(239, 68, 68, 1)',
+                            'rgba(124, 58, 237, 1)',
+                            'rgba(251, 191, 36, 1)'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#94A3B8',
+                                font: { family: 'Orbitron', size: 12 },
+                                padding: 20
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(30, 41, 59, 0.9)',
+                            titleColor: '#1E40AF',
+                            bodyColor: 'white',
+                            borderColor: '#1E40AF',
+                            borderWidth: 1,
+                            padding: 12,
+                            // 补充标准工时说明
+                            callbacks: {
+                                afterLabel: () => `11月标准工时：${STANDARD_HOURS}小时`
+                            }
+                        }
+                    },
+                    animation: { animateScale: true, animateRotate: true, duration: 2000 }
+                }
+            });
+        }
+
+        // 滚动动画
+        function handleScroll() {
+            document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                const rect = el.getBoundingClientRect();
+                const triggerPos = window.innerHeight * 0.85;
+                if (rect.top < triggerPos && rect.bottom > 0) {
+                    el.classList.add('visible');
+                }
+            });
+        }
+
+        // 事件绑定
+        closeModal.addEventListener('click', closeModalFunc);
+        modal.addEventListener('click', (e) => e.target === modal && closeModalFunc());
+        resetBtn.addEventListener('click', () => {
+            globalSearch.value = '';
+            mobileSearch.value = '';
+            renderTable();
+            document.querySelectorAll('.animate-on-scroll').forEach(el => el.classList.remove('visible'));
+            setTimeout(handleScroll, 100);
+        });
+        globalSearch.addEventListener('input', handleSearch);
+        mobileSearch.addEventListener('input', handleSearch);
+        window.addEventListener('scroll', handleScroll);
+
+        // 页面初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            initStats();
+            renderTable();
+            initChart();
+            handleScroll();
+        });
+    </script>
+</body>
+</html>
